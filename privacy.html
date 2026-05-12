@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Unwritten</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans TC',sans-serif;background:#faf7f2;color:#2c2416;line-height:1.8;padding:40px 20px;}
+  .wrap{max-width:720px;margin:0 auto;}
+  h1{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:600;margin-bottom:8px;}
+  .sub{font-size:13px;color:#7a6a55;margin-bottom:40px;}
+  h2{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:600;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd3c4;}
+  p{font-size:14px;margin-bottom:12px;color:#3a2e20;}
+  ul{font-size:14px;padding-left:1.4em;margin-bottom:12px;color:#3a2e20;}
+  ul li{margin-bottom:6px;}
+  a{color:#8b6e4e;text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .footer{margin-top:48px;padding-top:20px;border-top:1px solid #ddd3c4;font-size:12px;color:#b8a896;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600&family=Noto+Sans+TC:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Privacy Policy</h1>
+  <div class="sub">Unwritten &nbsp;·&nbsp; Last updated: May 2026</div>
+
+  <h2>Overview</h2>
+  <p>
+    Unwritten is a personal writing tool that runs entirely in your browser.
+    This Privacy Policy explains how the application handles your data.
+    We are committed to protecting your privacy and being transparent about our practices.
+  </p>
+
+  <h2>Data Storage</h2>
+  <p>All content you create in Unwritten — including works, chapters, characters, outlines, and notes — is stored <strong>locally in your browser</strong> using <code>localStorage</code>. This data never leaves your device unless you explicitly choose to back it up.</p>
+  <ul>
+    <li>No data is sent to any server operated by Unwritten.</li>
+    <li>No account registration is required to use the application.</li>
+    <li>Clearing your browser data will erase locally stored content.</li>
+  </ul>
+
+  <h2>Google Drive Integration (Optional)</h2>
+  <p>
+    Unwritten offers an optional Google Drive backup feature. If you choose to connect your Google account:
+  </p>
+  <ul>
+    <li>You will be prompted to authorise access via Google's official OAuth 2.0 flow.</li>
+    <li>Unwritten only requests the <strong><code>drive.file</code></strong> scope, which limits access to files created by this application. We cannot read, modify, or delete any other files in your Google Drive.</li>
+    <li>Your backup data is saved as a single JSON file named <code>unwritten_backup.json</code> in your own Google Drive.</li>
+    <li>Unwritten does not store your Google credentials. Access tokens are held temporarily in memory and are never written to a database or sent to a third-party server.</li>
+    <li>You can revoke access at any time via <a href="https://myaccount.google.com/permissions" target="_blank">Google Account Permissions</a>.</li>
+  </ul>
+
+  <h2>Dropbox Integration (Optional)</h2>
+  <p>
+    Unwritten also offers an optional Dropbox backup feature. If you choose to connect your Dropbox account:
+  </p>
+  <ul>
+    <li>You will be redirected to Dropbox's official OAuth 2.0 authorisation page.</li>
+    <li>Unwritten saves a single backup file named <code>unwritten_backup.json</code> to your Dropbox.</li>
+    <li>Dropbox access tokens are held temporarily in memory only and are not persisted or transmitted elsewhere.</li>
+    <li>You can revoke access at any time via your <a href="https://www.dropbox.com/account/connected_apps" target="_blank">Dropbox connected apps settings</a>.</li>
+  </ul>
+
+  <h2>Data We Do Not Collect</h2>
+  <p>Unwritten does <strong>not</strong> collect, store, or transmit:</p>
+  <ul>
+    <li>Personal identifying information</li>
+    <li>Usage analytics or telemetry</li>
+    <li>IP addresses or device identifiers</li>
+    <li>The content of your writing</li>
+    <li>Cookies for tracking purposes</li>
+  </ul>
+
+  <h2>Third-Party Services</h2>
+  <p>Unwritten loads fonts from Google Fonts and icons from jsDelivr CDN for display purposes. These services may log standard request information (such as IP address) according to their own privacy policies. No personally identifiable data from your writing is shared with these services.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>Unwritten is not directed at children under the age of 13. We do not knowingly collect any information from children.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Changes will be reflected by updating the "Last updated" date above. Continued use of the application after changes constitutes acceptance of the updated policy.</p>
+
+  <h2>Contact</h2>
+  <p>If you have any questions about this Privacy Policy, you may contact the developer via the <a href="https://github.com/kisugi0009/Unwritten" target="_blank">GitHub repository</a>.</p>
+
+  <div class="footer">
+    &copy; 2026 Unwritten &nbsp;·&nbsp;
+    <a href="https://kisugi0009.github.io/Unwritten">Back to app</a>
+  </div>
+
+</div>
+</body>
+</html>
