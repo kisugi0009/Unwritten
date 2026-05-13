@@ -1,0 +1,3004 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Unwritten">
+<meta name="theme-color" content="#faf7f2">
+<title>Unwritten</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='none'/%3E%3Crect x='5' y='3' width='22' height='26' rx='2' fill='none' stroke='%23111' stroke-width='1'/%3E%3Cpolyline points='5,10 12,10 12,3' fill='none' stroke='%23111' stroke-width='1' stroke-linejoin='round'/%3E%3Cg transform='translate(5.8,3.5) scale(0.168)'%3E%3Cpath fill='%23111' d='M83.6,53.2h-9.9v2.9l9.9,1.3.3,33.1c.1,7.9-1.2,13.5-4,16.9-2.8,3.4-6.7,5.1-11.7,5.1s-6.1-.7-8.3-2.1c-2.3-1.4-4-3.7-5.1-6.9-1.2-3.2-1.7-7.4-1.7-12.7v-8.2c0-5,0-9.9,0-14.8,0-3.7,0-7.4,0-11l8.3-.8v-2.9h-30.9v2.9l7.5.7c.1,3.7.2,7.4.2,11.2,0,5,0,9.9,0,14.7v9.5c0,6.8,1.1,12.2,3.2,16.3,2.1,4,5.1,6.9,8.9,8.6,3.8,1.7,8.2,2.6,13.2,2.6,7.7,0,13.7-2.3,17.8-7,4.1-4.7,6.2-12,6.3-21.9l.3-33.3,9-1.3v-2.9h-13.4Z'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+/* ── THEME VARIABLES ─────────────────────── */
+:root{
+  --paper:#faf7f2;--paper-dark:#f3ede3;--paper-mid:#ede6d8;
+  --ink:#2c2416;--ink-muted:#7a6a55;--ink-faint:#b8a896;
+  --accent:#8b6e4e;--accent-light:#e8ddd0;
+  --rule:#ddd3c4;
+  --note-yellow:#fef9e7;--note-rose:#fdf0f0;--note-sage:#f0f4ef;--note-sky:#eff4fb;
+  --ok:#2d7a4f;--danger:#b05555;--danger-bg:#fdf0f0;
+}
+[data-theme="dark"]{
+  --paper:#1e1f1b;--paper-dark:#16171a;--paper-mid:#252620;
+  --ink:#e8e0d0;--ink-muted:#a89880;--ink-faint:#6a5f50;
+  --accent:#b8926a;--accent-light:#2a2520;--rule:#2e2d28;
+  --note-yellow:#2a2510;--note-rose:#2a1515;--note-sage:#132215;--note-sky:#101c2a;
+  --ok:#4aaa70;--danger:#c07070;--danger-bg:#2a1515;
+}
+[data-theme="forest"]{
+  --paper:#f2f5ef;--paper-dark:#e6ebe0;--paper-mid:#d8e0d0;
+  --ink:#1e2b1a;--ink-muted:#5a7050;--ink-faint:#9aaa8a;
+  --accent:#4a7a40;--accent-light:#d8ebd0;--rule:#c8d8c0;
+  --note-yellow:#faf5e0;--note-rose:#f5e8e8;--note-sage:#e0f0da;--note-sky:#e0ecf5;
+  --ok:#2d6a40;--danger:#a05050;--danger-bg:#f5e8e8;
+}
+[data-theme="slate"]{
+  --paper:#f0f2f5;--paper-dark:#e4e8ee;--paper-mid:#d8dde6;
+  --ink:#1a2030;--ink-muted:#4a5570;--ink-faint:#8a95aa;
+  --accent:#3a5080;--accent-light:#d0d8eb;--rule:#c8d0de;
+  --note-yellow:#faf5e0;--note-rose:#f5e8ec;--note-sage:#e0ece8;--note-sky:#dde8f5;
+  --ok:#2a6050;--danger:#904040;--danger-bg:#f5e8ec;
+}
+[data-theme="custom"]{
+  --paper:var(--c-paper);--paper-dark:var(--c-paper-dark);--paper-mid:var(--c-paper-mid);
+  --ink:var(--c-ink);--ink-muted:var(--c-ink-muted);--ink-faint:var(--c-ink-faint);
+  --accent:var(--c-accent);--accent-light:var(--c-accent-light);--rule:var(--c-rule);
+}
+
+/* ── RESET ───────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--paper);font-family:'Noto Sans TC',sans-serif;color:var(--ink);transition:background .2s,color .2s;}
+
+/* ── LAYOUT ──────────────────────────────── */
+.app{display:flex;height:100vh;overflow:hidden;}
+.sidebar{width:224px;min-width:224px;background:var(--paper-dark);border-right:1px solid var(--rule);display:flex;flex-direction:column;overflow:hidden;position:relative;height:100vh;z-index:10;transition:width .25s,min-width .25s;flex-shrink:0;}
+.sidebar.closed{width:0;min-width:0;border-right:none;}
+.sidebar-header{padding:16px 16px 13px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.sidebar-header:hover .app-sub{color:var(--accent);}
+.sidebar-overlay{display:none;}
+.sidebar-overlay.show{display:none;}
+.app-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:600;letter-spacing:.05em;color:var(--ink);}
+.app-sub{font-size:10px;color:var(--ink-faint);margin-top:2px;letter-spacing:.1em;text-transform:uppercase;transition:color .15s;}
+.sidebar-scroll{flex:1;overflow-y:auto;padding-bottom:36px;}
+.sidebar-scroll::-webkit-scrollbar{width:3px;}
+.sidebar-scroll::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px;}
+.sidebar-sec{padding:8px 0;border-bottom:1px solid var(--rule);}
+.sidebar-label{font-size:9px;letter-spacing:.14em;color:var(--ink-faint);padding:4px 16px 5px;text-transform:uppercase;}
+.s-item{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:13px;color:var(--ink-muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s,color .12s;font-family:inherit;}
+.s-item:hover{background:var(--accent-light);color:var(--ink);}
+.s-item.active{background:var(--accent-light);color:var(--accent);font-weight:500;}
+.s-item i{font-size:15px;flex-shrink:0;}
+.s-add{display:flex;align-items:center;gap:6px;padding:6px 16px;font-size:12px;color:var(--ink-faint);cursor:pointer;border:none;background:none;width:100%;transition:color .12s;font-family:inherit;}
+.s-add:hover{color:var(--accent);}
+.work-hdr{display:flex;align-items:center;justify-content:space-between;padding:7px 16px 3px;cursor:pointer;user-select:none;}
+.work-hdr-name{font-size:12px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:6px;}
+.work-chev{font-size:13px;color:var(--ink-faint);transition:transform .2s;}
+.w-sub{display:flex;align-items:center;gap:8px;padding:5px 16px 5px 30px;font-size:12px;color:var(--ink-muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s;font-family:inherit;}
+.w-sub:hover{background:var(--accent-light);color:var(--ink);}
+.w-sub.active{color:var(--accent);font-weight:500;background:var(--accent-light);}
+.w-sub i{font-size:13px;}
+.sidebar-footer{padding:6px 0 38px;}
+/* global links in sidebar */
+.glink-row{display:flex;align-items:center;gap:5px;padding:4px 10px 4px 16px;}
+.glink-row:hover{background:var(--accent-light);}
+.glink-name{font-size:11px;color:var(--ink-muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.glink-open{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:13px;padding:2px;border-radius:3px;flex-shrink:0;}
+.glink-open:hover{color:var(--accent);}
+.glink-del{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:12px;padding:2px;border-radius:3px;opacity:0;flex-shrink:0;}
+.glink-row:hover .glink-del{opacity:1;}
+.glink-del:hover{color:var(--danger);}
+
+/* ── MAIN ────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 26px;border-bottom:1px solid var(--rule);flex-shrink:0;gap:10px;}
+.breadcrumb{font-size:13px;color:var(--ink-muted);display:flex;align-items:center;gap:6px;}
+.breadcrumb strong{color:var(--ink);font-weight:500;}
+.topbar-r{display:flex;gap:6px;align-items:center;}
+.content{flex:1;overflow-y:auto;padding:26px 34px 48px;min-height:0;}
+.content::-webkit-scrollbar{width:5px;}
+.content::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ── BUTTONS ─────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .12s;border:1px solid var(--rule);background:none;color:var(--ink-muted);white-space:nowrap;}
+.btn:hover{border-color:var(--accent);color:var(--accent);}
+.btn.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent);}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn-primary:hover{opacity:.85;color:#fff;border-color:var(--accent);}
+.btn-danger{border-color:#e5b0b0;color:var(--danger);}
+.btn-danger:hover{background:var(--danger-bg);}
+
+/* ── PAGE TYPOGRAPHY ─────────────────────── */
+.page-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:5px;}
+.page-desc{font-size:13px;color:var(--ink-faint);margin-bottom:22px;border-bottom:1px solid var(--rule);padding-bottom:14px;}
+.sec-label{font-size:10px;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase;margin:18px 0 9px;display:flex;align-items:center;gap:8px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--rule);}
+
+/* ── WORKS GRID ──────────────────────────── */
+.works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:13px;margin-bottom:22px;}
+.work-card{background:var(--paper-dark);border:1px solid var(--rule);border-radius:10px;padding:15px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;}
+.work-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.work-spine{width:4px;height:100%;border-radius:3px 0 0 3px;position:absolute;left:0;top:0;}
+.work-cover{width:100%;height:90px;object-fit:cover;border-radius:5px;margin-bottom:8px;display:block;background:var(--paper-mid);}
+.work-name{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px;padding-left:9px;}
+.work-genre{font-size:10px;color:var(--ink-faint);padding-left:9px;margin-bottom:8px;}
+.work-cat-badge{font-size:9px;padding:2px 7px;border-radius:20px;background:var(--paper-mid);color:var(--ink-faint);display:inline-block;margin:0 0 7px 9px;}
+.work-stats{display:flex;gap:6px;padding-left:9px;flex-wrap:wrap;}
+.stat-pill{font-size:10px;color:var(--ink-muted);background:var(--paper-mid);padding:2px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;}
+.add-work-card{background:none;border:1.5px dashed var(--rule);border-radius:10px;padding:15px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:108px;color:var(--ink-faint);font-size:12px;font-family:inherit;transition:all .18s;width:100%;}
+.add-work-card:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.add-work-card i{font-size:20px;}
+
+/* ── CATEGORY FILTER ─────────────────────── */
+.cat-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--rule);background:none;color:var(--ink-muted);cursor:pointer;transition:all .12s;font-family:inherit;}
+.cat-tag:hover{border-color:var(--accent);color:var(--accent);}
+.cat-tag.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500;}
+
+/* ── SPARKS ──────────────────────────────── */
+.sparks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:11px;}
+.spark-card{border-radius:8px;padding:13px;font-size:13px;line-height:1.6;color:var(--ink);border:1px solid transparent;position:relative;transition:border-color .15s;}
+.spark-card.yellow{background:var(--note-yellow);}
+.spark-card.rose{background:var(--note-rose);}
+.spark-card.sage{background:var(--note-sage);}
+.spark-card.sky{background:var(--note-sky);}
+.spark-card:hover{border-color:var(--accent);}
+.spark-meta{font-size:10px;color:var(--ink-faint);margin-top:7px;display:flex;align-items:center;gap:3px;}
+.spark-del{position:absolute;top:5px;right:5px;background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:13px;opacity:0;transition:opacity .12s;padding:3px;border-radius:4px;}
+.spark-card:hover .spark-del{opacity:1;}
+.spark-del:hover{color:var(--danger);}
+.add-spark-card{border:1.5px dashed var(--rule);border-radius:8px;padding:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;font-size:12px;color:var(--ink-faint);background:none;font-family:inherit;transition:all .18s;min-height:78px;width:100%;}
+.add-spark-card:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+
+/* ── DOC LIST ────────────────────────────── */
+.doc-item{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--paper-dark);border:1px solid var(--rule);border-radius:8px;margin-bottom:7px;cursor:pointer;transition:border-color .12s;}
+.doc-item:hover{border-color:var(--accent);}
+
+/* ── CHAR PROFILE ────────────────────────── */
+.char-card{background:var(--paper-dark);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.char-card-hdr{background:var(--paper-mid);padding:14px 18px;display:flex;align-items:center;gap:13px;border-bottom:1px solid var(--rule);}
+.char-photo{width:64px;height:64px;border-radius:8px;object-fit:cover;border:2px solid var(--rule);flex-shrink:0;background:var(--paper-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--ink-faint);}
+.char-photo img{width:64px;height:64px;border-radius:6px;object-fit:cover;display:block;}
+.char-name-inp{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:600;color:var(--ink);background:none;border:none;outline:none;width:100%;}
+.char-role-inp{font-size:12px;color:var(--ink-faint);background:none;border:none;outline:none;width:100%;margin-top:2px;}
+.char-body{padding:14px 18px;}
+.char-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px;}
+.char-field{display:flex;flex-direction:column;gap:3px;}
+.char-field-label{font-size:9px;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase;}
+.char-field-inp{font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;font-family:inherit;outline:none;transition:border-color .12s;}
+.char-field-inp:focus{border-color:var(--accent);}
+.char-field-ta{font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:7px 9px;font-family:'Noto Serif TC',serif;line-height:1.7;resize:none;outline:none;width:100%;transition:border-color .12s;}
+.char-field-ta:focus{border-color:var(--accent);}
+.chars-list{display:flex;flex-direction:column;gap:9px;}
+.char-list-item{display:flex;align-items:center;gap:11px;padding:11px 14px;background:var(--paper-dark);border:1px solid var(--rule);border-radius:8px;cursor:pointer;transition:border-color .12s;}
+.char-list-item:hover{border-color:var(--accent);}
+.char-list-avatar{width:38px;height:38px;border-radius:7px;object-fit:cover;flex-shrink:0;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;}
+
+/* ── OUTLINE ─────────────────────────────── */
+.outline-item{display:flex;gap:11px;margin-bottom:7px;align-items:flex-start;}
+.outline-num{width:26px;height:26px;background:var(--paper-mid);border:1px solid var(--rule);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink-muted);flex-shrink:0;margin-top:5px;}
+.outline-ch-inp{font-size:14px;font-weight:500;color:var(--ink);background:none;border:none;border-bottom:1px solid var(--rule);outline:none;width:100%;padding:3px 0;font-family:inherit;margin-bottom:3px;transition:border-color .12s;}
+.outline-ch-inp:focus{border-color:var(--accent);}
+.outline-sum-inp{font-size:12px;color:var(--ink-muted);background:none;border:none;outline:none;width:100%;padding:2px 0;font-family:inherit;line-height:1.6;}
+.outline-del{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:13px;padding:3px;margin-top:3px;flex-shrink:0;opacity:0;transition:opacity .12s;}
+.outline-item:hover .outline-del{opacity:1;}
+.outline-del:hover{color:var(--danger);}
+
+/* ── WORLD ───────────────────────────────── */
+.split-layout{display:grid;grid-template-columns:205px 1fr;min-height:480px;border:1px solid var(--rule);border-radius:10px;overflow:hidden;}
+.split-sidebar{background:var(--paper-mid);border-right:1px solid var(--rule);display:flex;flex-direction:column;}
+.split-sidebar-hdr{padding:11px 13px 9px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;}
+.split-sidebar-hdr span{font-size:10px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;}
+.split-cat-list{flex:1;overflow-y:auto;padding:5px 0;}
+.split-cat-btn{display:flex;align-items:center;gap:7px;padding:7px 13px;font-size:13px;color:var(--ink-muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s;font-family:inherit;}
+.split-cat-btn:hover{background:var(--accent-light);color:var(--ink);}
+.split-cat-btn.active{background:var(--accent-light);color:var(--accent);font-weight:500;}
+.split-cat-del{margin-left:auto;opacity:0;color:var(--ink-faint);font-size:12px;background:none;border:none;cursor:pointer;padding:2px;border-radius:3px;}
+.split-cat-btn:hover .split-cat-del{opacity:1;}
+.split-cat-del:hover{color:var(--danger);}
+.split-add-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;font-size:12px;color:var(--ink-faint);cursor:pointer;border:none;border-top:1px solid var(--rule);background:none;width:100%;transition:color .12s;font-family:inherit;}
+.split-add-btn:hover{color:var(--accent);}
+.split-content{background:var(--paper);display:flex;flex-direction:column;overflow:hidden;}
+.split-content-hdr{padding:13px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:9px;}
+.split-content-title{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:600;color:var(--ink);background:none;border:none;outline:none;flex:1;}
+.world-entries{flex:1;padding:13px 18px;overflow-y:auto;}
+.world-entry{border:1px solid var(--rule);border-radius:8px;margin-bottom:9px;overflow:hidden;background:var(--paper-dark);}
+.world-entry-head{display:flex;align-items:center;gap:7px;padding:9px 13px;cursor:pointer;background:var(--paper-mid);}
+.world-entry-title-inp{font-size:13px;font-weight:500;flex:1;color:var(--ink);background:none;border:none;outline:none;font-family:inherit;}
+.world-entry-del{opacity:0;color:var(--ink-faint);font-size:13px;background:none;border:none;cursor:pointer;padding:2px;transition:opacity .12s;border-radius:3px;}
+.world-entry:hover .world-entry-del{opacity:1;}
+.world-entry-del:hover{color:var(--danger);}
+.world-entry-body{padding:11px 13px;display:none;}
+.world-entry-ta{width:100%;font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.8;color:var(--ink);background:none;border:none;outline:none;resize:none;min-height:78px;}
+.world-add-entry{display:flex;align-items:center;gap:5px;padding:7px 13px;font-size:12px;color:var(--ink-faint);cursor:pointer;border:none;border-top:1px solid var(--rule);background:none;width:100%;transition:color .12s;font-family:inherit;margin-top:3px;}
+.world-add-entry:hover{color:var(--accent);}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:180px;color:var(--ink-faint);font-size:13px;gap:7px;}
+
+/* ── CHAPTERS (full-page editor) ─────────── */
+.chapters-layout{display:grid;grid-template-columns:210px 1fr;height:calc(100vh - 130px);border:1px solid var(--rule);border-radius:10px;overflow:hidden;}
+.ch-sidebar{background:var(--paper-mid);border-right:1px solid var(--rule);display:flex;flex-direction:column;overflow:hidden;}
+.ch-sidebar-hdr{padding:11px 13px 9px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.ch-sidebar-hdr span{font-size:10px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;}
+.ch-search-bar{padding:6px 9px;border-bottom:1px solid var(--rule);flex-shrink:0;}
+.ch-search{width:100%;font-size:12px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:4px 8px;color:var(--ink);outline:none;font-family:inherit;}
+.ch-sort-bar{padding:4px 9px;border-bottom:1px solid var(--rule);display:flex;gap:3px;flex-shrink:0;}
+/* volume headers in chapter list */
+.ch-vol-header{display:flex;align-items:center;justify-content:space-between;padding:5px 13px 3px;font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--ink-muted);text-transform:uppercase;background:var(--paper-dark);border-bottom:1px solid var(--rule);}
+.ch-vol-del{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:11px;padding:1px 3px;opacity:0;}
+.ch-vol-header:hover .ch-vol-del{opacity:1;}
+.ch-vol-del:hover{color:var(--danger);}
+.ch-list{flex:1;overflow-y:auto;}
+.ch-btn{display:flex;align-items:center;gap:7px;padding:7px 13px;font-size:12px;color:var(--ink-muted);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s;font-family:inherit;}
+.ch-btn:hover{background:var(--accent-light);color:var(--ink);}
+.ch-btn.active{background:var(--accent-light);color:var(--accent);font-weight:500;}
+.ch-btn-num{width:19px;height:19px;border-radius:50%;background:var(--paper-dark);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink-muted);flex-shrink:0;}
+.ch-del{margin-left:auto;opacity:0;color:var(--ink-faint);font-size:11px;background:none;border:none;cursor:pointer;padding:2px;border-radius:3px;flex-shrink:0;}
+.ch-btn:hover .ch-del{opacity:1;}
+.ch-del:hover{color:var(--danger);}
+.ch-sidebar-footer{border-top:1px solid var(--rule);padding:5px 0;flex-shrink:0;}
+/* full-page chapter editor */
+.ch-editor{background:var(--paper);display:flex;flex-direction:column;overflow:hidden;}
+.ch-editor-hdr{padding:13px 22px 10px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ch-title-inp{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:600;color:var(--ink);background:none;border:none;outline:none;flex:1;}
+.ch-wc{font-size:11px;color:var(--ink-faint);white-space:nowrap;}
+.ch-body-ta{flex:1;padding:20px 22px;font-family:'Noto Serif TC',serif;font-size:15px;line-height:2.15;color:var(--ink);background:none;border:none;outline:none;resize:none;letter-spacing:.02em;overflow-y:auto;}
+.ch-body-ta::placeholder{color:var(--ink-faint);}
+.ch-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--ink-faint);font-size:13px;gap:8px;}
+
+/* ── MOODBOARD ───────────────────────────── */
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:13px;}
+.mood-card{background:var(--paper-dark);border:1px solid var(--rule);border-radius:10px;overflow:hidden;transition:all .18s;position:relative;}
+.mood-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.mood-img{width:100%;height:125px;object-fit:cover;display:block;background:var(--paper-mid);}
+.mood-img-ph{width:100%;height:125px;background:var(--paper-mid);display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:26px;}
+.mood-body{padding:9px 11px;}
+.mood-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.mood-note{font-size:11px;color:var(--ink-faint);}
+.mood-folder-badge{font-size:10px;padding:2px 6px;border-radius:20px;background:var(--paper-mid);color:var(--ink-faint);display:inline-block;margin-bottom:4px;}
+.mood-del{position:absolute;top:5px;right:5px;background:rgba(0,0,0,.45);border:none;border-radius:5px;cursor:pointer;color:#fff;font-size:12px;padding:3px 5px;opacity:0;transition:opacity .15s;}
+.mood-card:hover .mood-del{opacity:1;}
+.folder-tag{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;border:1px solid var(--rule);background:none;color:var(--ink-muted);cursor:pointer;transition:all .12s;font-family:inherit;}
+.folder-tag:hover{border-color:var(--accent);color:var(--accent);}
+.folder-tag.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:500;}
+
+/* ── SETTINGS ────────────────────────────── */
+.settings-sec{margin-bottom:26px;}
+.settings-sec-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid var(--rule);}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:9px;}
+.theme-opt{border:1.5px solid transparent;border-radius:8px;padding:11px;cursor:pointer;transition:all .15s;background:transparent;font-family:inherit;text-align:left;width:100%;}
+.theme-opt:hover{border-color:#8b6e4e;}
+.theme-opt.active{border-color:#8b6e4e;background:#e8ddd0;}
+.theme-swatch{width:100%;height:26px;border-radius:5px;margin-bottom:7px;overflow:hidden;}
+.theme-name{font-size:12px;font-weight:500;}
+.theme-desc{font-size:10px;margin-top:1px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--rule);gap:14px;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row-label{font-size:13px;color:var(--ink);}
+.settings-row-desc{font-size:11px;color:var(--ink-faint);margin-top:1px;}
+/* custom theme builder */
+.custom-theme-builder{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px;}
+.color-picker-row{display:flex;flex-direction:column;gap:4px;}
+.color-picker-label{font-size:10px;letter-spacing:.08em;color:var(--ink-faint);text-transform:uppercase;}
+.color-picker-input{width:100%;height:34px;border:1px solid var(--rule);border-radius:6px;cursor:pointer;background:none;padding:2px;}
+.drive-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);display:inline-block;margin-right:4px;vertical-align:middle;}
+.drive-dot.on{background:var(--ok);}
+.drive-dot.spin{background:#d97706;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── MODALS ──────────────────────────────── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:200;padding:18px;}
+.modal-bg.show{display:flex;}
+.modal{background:var(--paper);border-radius:12px;padding:22px;width:100%;max-width:420px;border:1px solid var(--rule);max-height:90vh;overflow-y:auto;}
+.modal-title{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:600;margin-bottom:15px;color:var(--ink);}
+.modal-field{margin-bottom:11px;}
+.modal-label{font-size:11px;color:var(--ink-faint);margin-bottom:4px;letter-spacing:.08em;display:block;}
+.modal-input{width:100%;font-size:13px;color:var(--ink);background:var(--paper-mid);border:1px solid var(--rule);border-radius:7px;padding:7px 11px;font-family:inherit;outline:none;transition:border-color .12s;}
+.modal-input:focus{border-color:var(--accent);}
+.modal-ta{width:100%;font-size:13px;line-height:1.7;color:var(--ink);background:var(--paper-mid);border:1px solid var(--rule);border-radius:7px;padding:7px 11px;font-family:'Noto Serif TC',serif;outline:none;resize:none;height:96px;transition:border-color .12s;}
+.modal-ta:focus{border-color:var(--accent);}
+.modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:15px;}
+.color-opts{display:flex;gap:7px;}
+.color-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .12s;}
+.color-dot:hover{transform:scale(1.15);}
+.color-dot.selected{border-color:var(--ink);}
+.color-dot.yellow{background:#fef3c7;}
+.color-dot.rose{background:#ffe4e6;}
+.color-dot.sage{background:#d1fae5;}
+.color-dot.sky{background:#dbeafe;}
+.icon-picker{display:flex;gap:5px;flex-wrap:wrap;}
+.icon-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--rule);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;font-size:15px;color:var(--ink-muted);}
+.icon-btn:hover{border-color:var(--accent);}
+.icon-btn.selected{border-color:var(--accent);background:var(--accent-light);}
+/* image upload area */
+.img-drop-area{border:1.5px dashed var(--rule);border-radius:8px;padding:14px;text-align:center;cursor:pointer;transition:border-color .15s;position:relative;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;color:var(--ink-faint);}
+.img-drop-area:hover{border-color:var(--accent);}
+.img-drop-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.img-preview{max-width:100%;max-height:150px;border-radius:6px;object-fit:contain;margin-top:7px;}
+
+/* ── WELCOME MODAL ───────────────────────── */
+.welcome-modal{max-width:460px;}
+.welcome-icon{font-size:40px;text-align:center;margin-bottom:10px;}
+.welcome-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:600;text-align:center;margin-bottom:8px;color:var(--ink);}
+.welcome-sub{font-size:13px;color:var(--ink-muted);text-align:center;line-height:1.7;margin-bottom:20px;}
+.welcome-btns{display:flex;flex-direction:column;gap:8px;}
+.welcome-btn-primary{background:var(--accent);border:none;color:#fff;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;transition:opacity .15s;}
+.welcome-btn-primary:hover{opacity:.85;}
+.welcome-btn-secondary{background:none;border:1px solid var(--rule);color:var(--ink-muted);padding:10px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.welcome-btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.welcome-note{font-size:11px;color:var(--ink-faint);text-align:center;margin-top:10px;}
+
+/* ── IMPORT TYPE BUTTONS ─────────────────── */
+.import-type-btn{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px solid var(--rule);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink-muted);transition:all .12s;user-select:none;}
+.import-type-btn:hover{border-color:var(--accent);color:var(--ink);}
+.import-type-btn i{font-size:16px;flex-shrink:0;}
+.import-type-btn input:checked ~ *{color:var(--accent);}
+.import-type-btn:has(input:checked){border-color:var(--accent);background:var(--accent-light);color:var(--accent);font-weight:500;}
+/* ── FONT SETTINGS ───────────────────────── */
+:root{--font-size-base:15px;--font-weight-base:400;--font-family-base:'Noto Serif TC',serif;--font-size-ui:13px;}
+.font-opt-row{display:flex;gap:6px;flex-wrap:wrap;}
+.font-opt{padding:6px 14px;border:1.5px solid var(--rule);border-radius:7px;font-size:13px;cursor:pointer;background:none;color:var(--ink-muted);font-family:inherit;transition:all .12s;}
+.font-opt:hover{border-color:var(--accent);color:var(--accent);}
+.font-opt.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent);font-weight:500;}
+/* apply font vars to writing areas */
+.ch-body-ta,.editor-body-el{font-size:var(--font-size-base)!important;font-weight:var(--font-weight-base)!important;font-family:var(--font-family-base)!important;}
+/* ── WYSIWYG EDITOR ──────────────────────── */
+.wy-wrap{display:flex;flex-direction:column;height:100%;}
+.wy-toolbar{display:flex;align-items:center;gap:2px;padding:6px 10px;background:var(--paper-dark);border-bottom:1px solid var(--rule);flex-wrap:wrap;flex-shrink:0;}
+.wy-toolbar-group{display:flex;align-items:center;gap:1px;}
+.wy-toolbar-sep{width:1px;height:18px;background:var(--rule);margin:0 4px;flex-shrink:0;}
+.wy-btn{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;border-radius:5px;background:none;cursor:pointer;color:var(--ink-muted);font-size:14px;transition:all .12s;flex-shrink:0;}
+.wy-btn:hover{background:var(--accent-light);color:var(--accent);}
+.wy-btn.active{background:var(--accent-light);color:var(--accent);}
+.wy-btn-text{width:auto;padding:0 8px;font-size:12px;font-family:inherit;}
+.wy-select{font-size:12px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:5px;padding:3px 6px;cursor:pointer;outline:none;font-family:inherit;height:28px;}
+.wy-select:focus{border-color:var(--accent);}
+.wy-editor{flex:1;padding:20px 24px;font-family:var(--font-family-base,'Noto Serif TC',serif);font-size:var(--font-size-base,15px);font-weight:var(--font-weight-base,400);color:var(--ink);line-height:2;outline:none;overflow-y:auto;min-height:200px;}
+.wy-editor:empty:before{content:attr(data-placeholder);color:var(--ink-faint);pointer-events:none;}
+.wy-editor h1{font-size:1.6em;font-weight:600;margin:0.6em 0 0.3em;font-family:'Noto Serif TC',serif;}
+.wy-editor h2{font-size:1.3em;font-weight:600;margin:0.5em 0 0.25em;font-family:'Noto Serif TC',serif;}
+.wy-editor h3{font-size:1.1em;font-weight:600;margin:0.4em 0 0.2em;font-family:'Noto Serif TC',serif;}
+.wy-editor blockquote{border-left:3px solid var(--accent);margin:0.5em 0;padding:0.3em 0 0.3em 1em;color:var(--ink-muted);}
+.wy-editor hr{border:none;border-top:1px solid var(--rule);margin:1em 0;}
+.wy-editor ul{padding-left:1.4em;margin:0.3em 0;}
+.wy-editor ol{padding-left:1.4em;margin:0.3em 0;}
+.wy-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-top:1px solid var(--rule);flex-shrink:0;flex-wrap:wrap;gap:8px;}
+.wy-wc{font-size:11px;color:var(--ink-faint);}
+/* ── CLOUD PROVIDER CARDS ────────────────── */
+.cloud-provider-card{border:1px solid var(--rule);border-radius:8px;padding:12px;background:var(--paper-dark);transition:border-color .15s;}
+.cloud-provider-card.connected{border-color:var(--ok);}
+.cloud-provider-status{font-size:11px;color:var(--ink-faint);display:flex;align-items:center;gap:4px;}
+.cloud-provider-status.on{color:var(--ok);}
+.cloud-provider-status.spin{color:#d97706;}
+/* ── BATCH SELECT ────────────────────────── */
+.batch-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 12px;background:var(--accent-light);border-radius:8px;font-size:12px;color:var(--ink);}
+.batch-bar .btn{font-size:11px;padding:3px 9px;}
+.selectable{position:relative;}
+.selectable .sel-check{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:4px;border:2px solid var(--rule);background:var(--paper);display:none;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:all .12s;pointer-events:none;}
+.selectable.selected .sel-check{background:var(--accent);border-color:var(--accent);}
+.selectable.selected .sel-check::after{content:"";width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);display:flex;margin-top:-2px;}
+.select-mode .selectable{cursor:pointer;}
+.select-mode .selectable .sel-check{display:flex;pointer-events:auto;}
+/* ── CHAR CUSTOM FIELDS ─────────────────── */
+.char-custom-field{display:flex;gap:6px;align-items:flex-start;margin-bottom:10px;}
+.char-custom-label-inp{font-size:9px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--rule);outline:none;font-family:inherit;width:80px;flex-shrink:0;padding:0 0 2px;}
+.char-custom-label-inp:focus{border-color:var(--accent);}
+.char-custom-val-ta{flex:1;font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:6px 9px;font-family:'Noto Serif TC',serif;line-height:1.7;resize:none;outline:none;transition:border-color .12s;}
+.char-custom-val-ta:focus{border-color:var(--accent);}
+.char-custom-del{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:14px;padding:4px;flex-shrink:0;margin-top:4px;transition:color .12s;}
+.char-custom-del:hover{color:var(--danger);}
+/* ── OUTLINE TREE ────────────────────────── */
+.outline-tree{list-style:none;padding:0;margin:0;}
+.outline-tree ul{list-style:none;padding-left:20px;margin:0;}
+.outline-node{margin-bottom:4px;}
+.outline-node-row{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:6px;transition:background .12s;}
+.outline-node-row:hover{background:var(--accent-light);}
+.outline-toggle{background:none;border:none;cursor:pointer;color:var(--ink-faint);font-size:13px;padding:1px 3px;width:18px;flex-shrink:0;transition:transform .15s;}
+.outline-toggle.open{transform:rotate(90deg);}
+.outline-toggle.leaf{visibility:hidden;}
+.outline-node-type{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#fff;padding:1px 5px;border-radius:3px;flex-shrink:0;}
+.outline-node-type.vol{background:#8b6e4e;}
+.outline-node-type.ch{background:#5a7a9a;}
+.outline-node-type.ep{background:#5a9a6a;}
+.outline-node-inp{flex:1;background:none;border:none;border-bottom:1px solid transparent;outline:none;font-size:13px;color:var(--ink);font-family:inherit;padding:1px 0;transition:border-color .12s;}
+.outline-node-inp:focus{border-color:var(--accent);}
+.outline-node-sum{font-size:11px;color:var(--ink-faint);background:none;border:none;outline:none;width:100%;font-family:inherit;padding:1px 0 1px 27px;line-height:1.5;}
+.outline-node-sum:focus{color:var(--ink);}
+.outline-node-actions{display:flex;gap:2px;opacity:0;transition:opacity .12s;flex-shrink:0;}
+.outline-node-row:hover .outline-node-actions{opacity:1;}
+.outline-node-add{background:none;border:none;cursor:pointer;font-size:11px;color:var(--ink-faint);padding:2px 5px;border-radius:4px;font-family:inherit;white-space:nowrap;}
+.outline-node-add:hover{color:var(--accent);background:var(--accent-light);}
+.outline-node-del{background:none;border:none;cursor:pointer;font-size:12px;color:var(--ink-faint);padding:2px 4px;border-radius:4px;}
+.outline-node-del:hover{color:var(--danger);}
+/* custom spark */
+.spark-card.custom{background:var(--spark-custom-bg,#f3e8ff);}
+/* ── LIGHTBOX ────────────────────────────── */
+#modal-lightbox .modal-bg{align-items:flex-start;padding-top:40px;}
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--ink);color:var(--paper);font-size:12px;padding:7px 16px;border-radius:20px;transition:transform .26s;z-index:300;pointer-events:none;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+/* ── MOBILE RESPONSIVE ───────────────────── */
+@media (max-width: 768px){
+  /* 手機版桌面側欄預設收起，用 mobile-drawer 代替 */
+  .sidebar{width:0!important;min-width:0!important;border-right:none!important;}
+  /* main fills full width */
+  .main{width:100%;height:100dvh;}
+  /* hide desktop sidebar toggle button text on mobile */
+  /* topbar compact - hide text labels, keep icons only */
+  .topbar{padding:8px 12px;gap:4px;}
+  .topbar-r{gap:3px;}
+  .topbar-r .btn{padding:5px 7px;font-size:11px;}
+  /* hide less important topbar buttons on mobile */
+  #btn-import-content span,
+  #btn-export-json span,
+  #btn-drive-backup span,
+  #drive-status-el{display:none!important;}
+  /* hide text in topbar buttons, keep icons */
+  .topbar-r .btn{min-width:0;}
+  .topbar-r .btn .btn-label{display:none!important;}
+  /* content padding reduced, extra bottom for nav+footer */
+  .content{padding:16px 14px;padding-bottom:100px;}
+  /* hide fixed footer on mobile - links are in drawer */
+  #app-footer{display:none!important;}
+  /* bottom nav bar */
+  .mobile-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;
+    background:var(--paper-dark);border-top:1px solid var(--rule);
+    z-index:100;height:54px;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .mobile-nav-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;border:none;background:none;cursor:pointer;color:var(--ink-muted);
+    font-size:9px;font-family:inherit;padding:6px 4px;transition:color .12s;
+  }
+  .mobile-nav-btn i{font-size:20px;}
+  .mobile-nav-btn.active{color:var(--accent);}
+  .mobile-nav-btn:hover{color:var(--ink);}
+  /* mobile sidebar drawer */
+  .mobile-drawer{display:none;position:fixed;inset:0;z-index:200;}
+  .mobile-drawer.open{display:block;}
+  .mobile-drawer-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.4);}
+  .mobile-drawer-panel{
+    position:absolute;left:0;top:0;bottom:0;width:280px;
+    background:var(--paper-dark);overflow-y:auto;
+    box-shadow:4px 0 20px rgba(0,0,0,.15);
+    display:flex;flex-direction:column;
+  }
+  /* chapters layout stacks on mobile */
+  .chapters-layout{grid-template-columns:1fr;height:auto;}
+  .ch-sidebar{height:200px;border-right:none;border-bottom:1px solid var(--rule);}
+  /* world layout stacks */
+  .split-layout{grid-template-columns:1fr;min-height:auto;}
+  .split-sidebar{height:160px;border-right:none;border-bottom:1px solid var(--rule);}
+  /* works grid 2 col on mobile */
+  .works-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  /* mood grid 2 col */
+  .mood-grid{grid-template-columns:repeat(2,1fr);}
+  /* hide drive status text on mobile */
+  #drive-status-el{display:none!important;}
+}
+@media (max-width: 400px){
+  .works-grid{grid-template-columns:1fr;}
+}
+/* hide mobile nav on desktop */
+@media (min-width: 769px){
+  .mobile-nav,.mobile-drawer{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="main-sidebar">
+    <div class="sidebar-header" id="sidebar-home-btn" title="回到所有作品">
+      <div><div class="app-title">Unwritten</div><div class="app-sub">Your writing nest</div></div>
+    </div>
+    <div class="sidebar-scroll">
+      <div class="sidebar-sec">
+        <div class="sidebar-label">Unwritten</div>
+        <button class="s-item active" id="nav-home"><i class="ti ti-layout-grid"></i> 所有作品</button>
+      </div>
+      <div class="sidebar-sec">
+        <div class="sidebar-label">靈感蒐集</div>
+        <button class="s-item" id="nav-sparks"><i class="ti ti-bulb"></i> 靈光一閃</button>
+        <button class="s-item" id="nav-moodboard"><i class="ti ti-photo"></i> 資料蒐集</button>
+      </div>
+      <div class="sidebar-sec">
+        <div class="sidebar-label">作品</div>
+        <div id="works-nav"></div>
+        <button class="s-add" id="sidebar-add-work"><i class="ti ti-plus"></i> 新增作品</button>
+      </div>
+      <div class="sidebar-sec">
+        <div class="sidebar-label">外部連結</div>
+        <div id="global-links-list" style="padding:3px 0"></div>
+        <button class="s-add" id="btn-add-global-link"><i class="ti ti-plus"></i> 新增連結</button>
+      </div>
+    </div>
+    <div class="sidebar-footer"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:4px;flex:1;min-width:0">
+        <button class="btn" id="btn-sidebar-toggle" style="padding:5px 8px;flex-shrink:0"><i class="ti ti-layout-sidebar"></i></button>
+        <div class="breadcrumb" id="breadcrumb"></div>
+      </div>
+      <div class="topbar-r">
+        <span id="drive-status-el" style="font-size:11px;color:var(--ink-faint);display:flex;align-items:center;gap:3px"></span>
+        <button class="btn" id="btn-drive-backup"><i class="ti ti-brand-google-drive"></i><span class="btn-label" id="drive-btn-label"> 連結雲端</span></button>
+        <button class="btn" id="btn-import-content"><i class="ti ti-file-upload"></i><span class="btn-label"> 匯入內容</span></button>
+        <button class="btn" id="btn-export-json"><i class="ti ti-download"></i><span class="btn-label"> 備份</span></button>
+        <label class="btn" style="cursor:pointer"><i class="ti ti-upload"></i><span class="btn-label"> 還原</span><input type="file" accept=".json" id="import-file-input" style="display:none"></label>
+        <button class="btn" id="nav-settings"><i class="ti ti-settings"></i><span class="btn-label"> 設定</span></button>
+      </div>
+    </div>
+    <div class="content">
+      <!-- HOME -->
+      <div class="panel active" id="panel-home">
+        <div class="page-title">Unwritten</div>
+        <div class="page-desc">你的所有作品都在這裡。</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+          <div class="sec-label" style="margin:0;flex:1">進行中的作品</div>
+          <button class="btn" id="btn-works-select-mode" style="font-size:11px;padding:3px 8px"><i class="ti ti-checkbox"></i> 選取</button>
+        </div>
+        <div id="cat-filter-bar" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px"></div>
+        <div class="batch-bar" id="works-batch-bar" style="display:none;margin-bottom:10px"></div>
+        <div class="works-grid" id="works-grid"></div>
+        <div class="sec-label">近期靈感</div>
+        <div class="sparks-grid" id="home-sparks" style="margin-bottom:14px"></div>
+        <button class="btn" id="btn-see-sparks">查看全部靈感 <i class="ti ti-arrow-right"></i></button>
+      </div>
+
+      <!-- SPARKS -->
+      <div class="panel" id="panel-sparks">
+        <div class="page-title">靈光一閃</div>
+        <div class="page-desc">沒有歸屬、轉瞬即逝的想法。先記下來，整理是之後的事。</div>
+        <div class="batch-bar" id="sparks-batch-bar" style="display:none"></div>
+        <div style="display:flex;gap:6px;margin-bottom:12px">
+          <button class="btn" id="btn-sparks-select-mode"><i class="ti ti-checkbox"></i> 選取</button>
+        </div>
+        <div class="sparks-grid" id="sparks-grid"></div>
+      </div>
+
+      <!-- MOODBOARD -->
+      <div class="panel" id="panel-moodboard">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+          <div class="page-title">資料蒐集</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn" id="btn-mood-select-mode"><i class="ti ti-checkbox"></i> 選取</button>
+            <button class="btn" id="btn-add-mooditem"><i class="ti ti-plus"></i> 新增資料</button>
+          </div>
+        </div>
+        <div class="page-desc">圖片、截圖、參考資料——你的靈感素材庫。</div>
+        <div class="batch-bar" id="mood-batch-bar" style="display:none"></div>
+        <div id="mood-folder-bar" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px"></div>
+        <div class="mood-grid" id="mood-grid"></div>
+      </div>
+
+      <!-- WORK HOME -->
+      <div class="panel" id="panel-work-home">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:5px">
+          <div class="page-title" id="work-home-title"></div>
+          <button class="btn btn-danger" id="btn-delete-work" style="margin-top:3px;flex-shrink:0"><i class="ti ti-trash"></i> 刪除作品</button>
+        </div>
+        <div class="page-desc" id="work-home-desc"></div>
+        <div class="sec-label">封面 &amp; 圖像</div>
+        <div id="work-cover-area" style="margin-bottom:16px"></div>
+        <div class="sec-label">文件</div>
+        <div id="work-docs-list" style="margin-bottom:18px"></div>
+        <div id="work-action-btns" style="display:flex;gap:7px;flex-wrap:wrap"></div>
+      </div>
+
+      <!-- EDITOR (WYSIWYG) -->
+      <div class="panel" id="panel-editor">
+        <input class="char-name-inp" id="editor-title" placeholder="文件標題..." style="font-size:20px;margin-bottom:5px;width:100%">
+        <div style="display:flex;gap:9px;align-items:center;font-size:12px;color:var(--ink-faint);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule);flex-wrap:wrap">
+          <span id="editor-badge"></span>
+          <select id="editor-type" style="font-size:12px;color:var(--ink);border:1px solid var(--rule);background:var(--paper);border-radius:5px;padding:2px 7px;font-family:inherit;cursor:pointer;outline:none">
+            <option value="world">世界觀</option><option value="char">人物設定</option>
+            <option value="outline">大綱</option><option value="other">其他</option>
+          </select>
+          <button class="btn btn-danger" id="editor-delete-btn" style="margin-left:auto;padding:3px 8px"><i class="ti ti-trash"></i> 刪除</button>
+        </div>
+        <div class="wy-wrap" style="border:1px solid var(--rule);border-radius:8px;overflow:hidden;min-height:500px" id="editor-wy-wrap">
+          <div class="wy-toolbar" id="editor-toolbar"></div>
+          <div class="wy-editor" id="editor-body" contenteditable="true" data-placeholder="開始書寫..."></div>
+          <div class="wy-footer">
+            <span class="wy-wc" id="editor-wc">0 字</span>
+            <div style="display:flex;gap:6px">
+              <button class="btn" id="btn-export-txt"><i class="ti ti-file-text"></i> TXT</button>
+              <button class="btn" id="btn-export-md"><i class="ti ti-markdown"></i> MD</button>
+              <button class="btn" id="btn-export-docx"><i class="ti ti-file-word"></i> Word</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARS LIST -->
+      <div class="panel" id="panel-chars">
+        <div class="page-title" id="chars-panel-title">人物設定</div>
+        <div class="page-desc">作品中所有的人物。</div>
+        <div class="chars-list" id="chars-list"></div>
+        <button class="btn" id="btn-add-char" style="margin-top:14px"><i class="ti ti-plus"></i> 新增人物</button>
+      </div>
+
+      <!-- CHAR PROFILE -->
+      <div class="panel" id="panel-char-profile">
+        <div class="char-card">
+          <div class="char-card-hdr">
+            <div class="char-photo" id="char-photo-wrap" title="點擊上傳照片">
+              <input type="file" id="char-photo-input" accept="image/*" style="display:none">
+            </div>
+            <div style="flex:1">
+              <input class="char-name-inp" id="char-name" placeholder="人物姓名">
+              <input class="char-role-inp" id="char-role" placeholder="身份 / 職業">
+            </div>
+            <button class="btn btn-danger" id="btn-delete-char" style="padding:3px 7px;flex-shrink:0"><i class="ti ti-trash"></i></button>
+          </div>
+          <div class="char-body">
+            <div class="char-row">
+              <div class="char-field"><div class="char-field-label">年齡</div><input class="char-field-inp" id="char-age" placeholder="—"></div>
+              <div class="char-field"><div class="char-field-label">性別</div><input class="char-field-inp" id="char-gender" placeholder="—"></div>
+            </div>
+            <div class="char-row">
+              <div class="char-field"><div class="char-field-label">出生地</div><input class="char-field-inp" id="char-origin" placeholder="—"></div>
+              <div class="char-field"><div class="char-field-label">陣營</div><input class="char-field-inp" id="char-side" placeholder="—"></div>
+            </div>
+            <div class="char-field" style="margin-bottom:10px"><div class="char-field-label">外貌描述</div><textarea class="char-field-ta" id="char-appearance" rows="2" placeholder="容貌、穿著、特徵..."></textarea></div>
+            <div class="char-field" style="margin-bottom:10px"><div class="char-field-label">個性</div><textarea class="char-field-ta" id="char-personality" rows="2" placeholder="性格特點、說話方式..."></textarea></div>
+            <div class="char-field" style="margin-bottom:14px"><div class="char-field-label">背景故事</div><textarea class="char-field-ta" id="char-backstory" rows="5" placeholder="過去的經歷、動機、祕密..."></textarea></div>
+            <div id="char-custom-fields"></div>
+            <button class="btn" id="btn-add-char-field" style="margin-top:6px;font-size:11px;padding:4px 10px"><i class="ti ti-plus"></i> 新增自訂欄位</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button class="btn" id="btn-char-back"><i class="ti ti-arrow-left"></i> 回到人物列表</button>
+          <button class="btn" id="btn-char-export-txt"><i class="ti ti-file-text"></i> TXT</button>
+          <button class="btn" id="btn-char-export-md"><i class="ti ti-markdown"></i> MD</button>
+        </div>
+      </div>
+
+      <!-- OUTLINE -->
+      <div class="panel" id="panel-outline">
+        <div class="page-title" id="outline-panel-title">故事大綱</div>
+        <div class="page-desc">樹狀層級：卷 → 章 → 話。可自由組合，不用每層都有。</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="btn" id="btn-add-outline-vol"><i class="ti ti-folder-plus"></i> 新增卷</button>
+          <button class="btn" id="btn-add-outline-ch"><i class="ti ti-plus"></i> 新增章</button>
+          <button class="btn" id="btn-outline-select-mode"><i class="ti ti-checkbox"></i> 選取</button>
+          <button class="btn" id="btn-outline-txt"><i class="ti ti-file-text"></i> TXT</button>
+          <button class="btn" id="btn-outline-md"><i class="ti ti-markdown"></i> MD</button>
+        </div>
+        <div class="batch-bar" id="outline-batch-bar" style="display:none;margin-bottom:10px"></div>
+        <div id="outline-list" style="margin-bottom:14px"></div>
+      </div>
+
+      <!-- WORLD -->
+      <div class="panel" id="panel-world">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+          <div class="page-title" id="world-panel-title">世界觀設定</div>
+          <div style="display:flex;gap:5px">
+            <button class="btn" id="btn-world-md"><i class="ti ti-markdown"></i> MD</button>
+            <button class="btn" id="btn-world-txt"><i class="ti ti-file-text"></i> TXT</button>
+          </div>
+        </div>
+        <div class="page-desc">地理、歷史、規則、勢力——構成世界的細節。</div>
+        <div class="split-layout">
+          <div class="split-sidebar">
+            <div class="split-sidebar-hdr">
+              <span>分類</span>
+              <button class="btn" id="btn-world-add-cat-top" style="padding:2px 6px;border:none"><i class="ti ti-plus" style="font-size:14px"></i></button>
+            </div>
+            <div class="split-cat-list" id="world-cat-list"></div>
+            <button class="split-add-btn" id="btn-world-add-cat"><i class="ti ti-plus"></i> 新增分類</button>
+          </div>
+          <div class="split-content" id="world-content">
+            <div class="empty-state"><i class="ti ti-map" style="font-size:26px"></i><span>選擇或建立一個分類</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAPTERS (full-page editor with sidebar) -->
+      <div class="panel" id="panel-chapters" style="height:calc(100vh - 126px);display:none;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;flex-shrink:0">
+          <div class="page-title" id="chapters-panel-title">章節</div>
+          <div style="display:flex;gap:5px">
+            <button class="btn" id="btn-ch-txt"><i class="ti ti-file-text"></i> TXT</button>
+            <button class="btn" id="btn-ch-md"><i class="ti ti-markdown"></i> MD</button>
+          </div>
+        </div>
+        <div class="page-desc" id="chapters-desc" style="flex-shrink:0">每一章的正文。點擊章節開始書寫。</div>
+        <div class="chapters-layout" style="flex:1">
+          <div class="ch-sidebar">
+            <div class="ch-sidebar-hdr">
+              <span>章節列表</span>
+              <button class="btn" id="btn-ch-add-top" style="padding:2px 6px;border:none"><i class="ti ti-plus" style="font-size:14px"></i></button>
+            </div>
+            <div class="ch-search-bar">
+              <input id="ch-search" class="ch-search" placeholder="搜尋…">
+            </div>
+            <div class="ch-sort-bar">
+              <button class="btn active" id="ch-sort-asc" style="padding:2px 6px;font-size:11px" title="正序"><i class="ti ti-sort-ascending-numbers"></i></button>
+              <button class="btn" id="ch-sort-desc" style="padding:2px 6px;font-size:11px" title="倒序"><i class="ti ti-sort-descending-numbers"></i></button>
+              <button class="btn" id="ch-sort-alpha" style="padding:2px 6px;font-size:11px" title="A→Z"><i class="ti ti-sort-ascending-letters"></i></button>
+            </div>
+            <div class="ch-list" id="ch-list"></div>
+            <div class="ch-sidebar-footer">
+              <button class="s-add" id="btn-ch-add"><i class="ti ti-plus"></i> 新增章節</button>
+            </div>
+          </div>
+          <div class="ch-editor" id="ch-editor">
+            <div class="ch-empty"><i class="ti ti-book-2" style="font-size:28px"></i><span>選擇或新增章節</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="page-title">設定</div>
+        <div class="page-desc">個人化與資料管理。</div>
+        <div class="settings-sec">
+          <div class="settings-sec-title">佈景主題</div>
+          <div class="theme-grid" id="theme-grid">
+            <button class="theme-opt" data-theme="default">
+              <div class="theme-swatch" style="background:linear-gradient(to right,#faf7f2 50%,#8b6e4e 50%)"></div>
+              <div class="theme-name" style="color:#2c2416">米白暖木</div><div class="theme-desc" style="color:#7a6a55">溫暖的書房基調</div>
+            </button>
+            <button class="theme-opt" data-theme="dark">
+              <div class="theme-swatch" style="background:linear-gradient(to right,#1e1f1b 50%,#b8926a 50%)"></div>
+              <div class="theme-name" style="color:#2c2416">深夜書房</div><div class="theme-desc" style="color:#7a6a55">深色護眼，夜間寫作</div>
+            </button>
+            <button class="theme-opt" data-theme="forest">
+              <div class="theme-swatch" style="background:linear-gradient(to right,#f2f5ef 50%,#4a7a40 50%)"></div>
+              <div class="theme-name" style="color:#1e2b1a">森林綠意</div><div class="theme-desc" style="color:#5a7050">清新自然，護眼配色</div>
+            </button>
+            <button class="theme-opt" data-theme="slate">
+              <div class="theme-swatch" style="background:linear-gradient(to right,#f0f2f5 50%,#3a5080 50%)"></div>
+              <div class="theme-name" style="color:#1a2030">石板藍調</div><div class="theme-desc" style="color:#4a5570">沉穩清爽，護眼藍系</div>
+            </button>
+            <button class="theme-opt" data-theme="custom" id="custom-theme-opt">
+              <div class="theme-swatch" id="custom-theme-swatch" style="background:linear-gradient(to right,#fff 50%,#888 50%)"></div>
+              <div class="theme-name" style="color:#2c2416">自訂主題</div><div class="theme-desc" style="color:#7a6a55">選擇你的配色</div>
+            </button>
+          </div>
+          <div id="custom-theme-builder" style="display:none;margin-top:14px">
+            <div class="custom-theme-builder">
+              <div class="color-picker-row">
+                <div class="color-picker-label">背景色</div>
+                <input type="color" class="color-picker-input" id="cp-paper" value="#faf7f2">
+              </div>
+              <div class="color-picker-row">
+                <div class="color-picker-label">文字色</div>
+                <input type="color" class="color-picker-input" id="cp-ink" value="#2c2416">
+              </div>
+              <div class="color-picker-row">
+                <div class="color-picker-label">強調色</div>
+                <input type="color" class="color-picker-input" id="cp-accent" value="#8b6e4e">
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btn-apply-custom" style="margin-top:10px"><i class="ti ti-check"></i> 套用自訂主題</button>
+          </div>
+        </div>
+        <div class="settings-sec">
+          <div class="settings-sec-title">字體設定</div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:7px;text-transform:uppercase">字體</div>
+            <div class="font-opt-row" id="font-family-opts">
+              <button class="font-opt active" data-family="'Noto Serif TC',serif" style="font-family:'Noto Serif TC',serif">明體</button>
+              <button class="font-opt" data-family="'Noto Sans TC',sans-serif" style="font-family:'Noto Sans TC',sans-serif">黑體</button>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:7px;text-transform:uppercase">文字大小</div>
+            <div class="font-opt-row" id="font-size-opts">
+              <button class="font-opt" data-size="13px" style="font-size:11px">小</button>
+              <button class="font-opt active" data-size="15px" style="font-size:13px">中</button>
+              <button class="font-opt" data-size="17px" style="font-size:15px">大</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:7px;text-transform:uppercase">文字粗細</div>
+            <div class="font-opt-row" id="font-weight-opts">
+              <button class="font-opt active" data-weight="400" style="font-weight:400">細</button>
+              <button class="font-opt" data-weight="700" style="font-weight:700">正常</button>
+              <button class="font-opt" data-weight="900" style="font-weight:900">粗</button>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding:12px 14px;background:var(--paper-mid);border-radius:7px;font-size:var(--font-size-base);font-weight:var(--font-weight-base);font-family:var(--font-family-base);color:var(--ink);line-height:2" id="font-preview">
+            這是字體預覽，你可以在這裡看到字體、大小和粗細的效果。The quick brown fox.
+          </div>
+        </div>
+        <div class="settings-sec">
+          <div class="settings-sec-title">雲端備份</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <div class="cloud-provider-card" id="cloud-card-google">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <i class="ti ti-brand-google-drive" style="font-size:20px;color:#4285f4"></i>
+                <span style="font-size:13px;font-weight:500;color:var(--ink)">Google Drive</span>
+              </div>
+              <div class="cloud-provider-status" id="cloud-status-google">未連線</div>
+              <button class="btn" id="btn-cloud-google" style="margin-top:8px;width:100%;justify-content:center">連結</button>
+            </div>
+            <div class="cloud-provider-card" id="cloud-card-dropbox">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <i class="ti ti-brand-dropbox" style="font-size:20px;color:#0061ff"></i>
+                <span style="font-size:13px;font-weight:500;color:var(--ink)">Dropbox</span>
+              </div>
+              <div class="cloud-provider-status" id="cloud-status-dropbox">未連線</div>
+              <button class="btn" id="btn-cloud-dropbox" style="margin-top:8px;width:100%;justify-content:center">連結</button>
+            </div>
+          </div>
+
+        </div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">匯出備份</div><div class="settings-row-desc">將所有資料匯出為 JSON</div></div>
+            <button class="btn" id="btn-settings-export"><i class="ti ti-download"></i> 匯出</button>
+          </div>
+          <div class="settings-row">
+            <div><div class="settings-row-label">匯入備份</div><div class="settings-row-desc">從 JSON 還原（覆蓋現有資料）</div></div>
+            <label class="btn" style="cursor:pointer"><i class="ti ti-upload"></i> 匯入<input type="file" accept=".json" id="import-file-input2" style="display:none"></label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end content -->
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="modal-welcome">
+  <div class="modal welcome-modal">
+    <div class="welcome-icon">📖</div>
+    <div class="welcome-title">歡迎來到 Unwritten</div>
+    <div class="welcome-sub">你的資料已儲存在瀏覽器本機。<br>是否要連結雲端服務，讓資料可以跨裝置同步？<br><span style="font-size:12px;color:var(--ink-faint)">支援 Google Drive、Dropbox、OneDrive</span></div>
+    <div class="welcome-btns">
+      <button class="welcome-btn-primary" id="btn-welcome-drive">前往設定連結雲端</button>
+      <button class="welcome-btn-secondary" id="btn-welcome-skip">先跳過，繼續使用</button>
+    </div>
+    <div class="welcome-note">之後可以在右上角「連結雲端」或「備份至雲端」按鈕操作</div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-new-work">
+  <div class="modal">
+    <div class="modal-title">建立新作品</div>
+    <div class="modal-field"><label class="modal-label">作品名稱</label><input class="modal-input" id="new-work-name" placeholder="例：星落之城"></div>
+    <div class="modal-field"><label class="modal-label">類型 / 標籤</label><input class="modal-input" id="new-work-genre" placeholder="例：奇幻、言情、科幻..."></div>
+    <div class="modal-field"><label class="modal-label">分類</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px" id="work-cat-picker"></div>
+      <div style="display:flex;gap:5px">
+        <input class="modal-input" id="new-work-cat-input" placeholder="新分類名稱..." style="flex:1">
+        <button class="btn" id="btn-add-work-cat"><i class="ti ti-plus"></i></button>
+      </div>
+    </div>
+    <div class="modal-field"><label class="modal-label">分冊 / 篇</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="new-work-has-volumes" style="width:15px;height:15px">
+          <span style="color:var(--ink-muted)">此作品有分冊或分篇</span>
+        </label>
+      </div>
+    </div>
+    <div class="modal-field"><label class="modal-label">書脊顏色</label>
+      <div class="color-opts">
+        <div class="color-dot yellow selected" data-color="yellow"></div>
+        <div class="color-dot rose" data-color="rose"></div>
+        <div class="color-dot sage" data-color="sage"></div>
+        <div class="color-dot sky" data-color="sky"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-new-work">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-new-work">建立</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-new-spark">
+  <div class="modal">
+    <div class="modal-title">記下靈感</div>
+    <div class="modal-field"><label class="modal-label">標題（選填）</label><input class="modal-input" id="new-spark-title" placeholder="簡短標題..."></div>
+    <div class="modal-field"><label class="modal-label">內容</label><textarea class="modal-ta" id="new-spark-content" placeholder="想到什麼就寫什麼..."></textarea></div>
+    <div class="modal-field"><label class="modal-label">便條顏色</label>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div class="color-opts">
+          <div class="color-dot yellow selected" data-color="yellow"></div>
+          <div class="color-dot rose" data-color="rose"></div>
+          <div class="color-dot sage" data-color="sage"></div>
+          <div class="color-dot sky" data-color="sky"></div>
+          <div class="color-dot custom-spark-dot" data-color="custom" id="spark-custom-dot" style="background:#c084fc;position:relative;overflow:hidden" title="自訂顏色">
+            <input type="color" id="spark-custom-color-inp" value="#c084fc" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;padding:0">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-new-spark">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-new-spark">記下</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-new-char">
+  <div class="modal">
+    <div class="modal-title">新增人物</div>
+    <div class="modal-field"><label class="modal-label">姓名</label><input class="modal-input" id="new-char-name" placeholder="人物姓名"></div>
+    <div class="modal-field"><label class="modal-label">身份 / 職業</label><input class="modal-input" id="new-char-role-input" placeholder="例：主角、反派、商人..."></div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-new-char">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-new-char">新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-new-world-cat">
+  <div class="modal">
+    <div class="modal-title">新增世界觀分類</div>
+    <div class="modal-field"><label class="modal-label">分類名稱</label><input class="modal-input" id="new-world-cat-name" placeholder="例：地理、歷史、魔法體系..."></div>
+    <div class="modal-field"><label class="modal-label">圖示</label><div class="icon-picker" id="world-icon-picker"></div></div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-new-world-cat">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-new-world-cat">建立</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-add-volume">
+  <div class="modal">
+    <div class="modal-title">新增冊 / 篇</div>
+    <div class="modal-field"><label class="modal-label">名稱</label><input class="modal-input" id="new-vol-name" placeholder="例：第一冊、序章篇..."></div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-add-vol">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-add-vol">新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-new-link">
+  <div class="modal">
+    <div class="modal-title">新增外部連結</div>
+    <div class="modal-field"><label class="modal-label">平台名稱</label><input class="modal-input" id="new-link-name" placeholder="例：Wattpad、小說狂人、巴哈姆特..."></div>
+    <div class="modal-field"><label class="modal-label">連結網址</label><input class="modal-input" id="new-link-url" placeholder="https://..."></div>
+    <div class="modal-field"><label class="modal-label">備註（選填）</label><input class="modal-input" id="new-link-note" placeholder="例：連載中、已完結..."></div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-new-link">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-new-link">新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-new-mooditem">
+  <div class="modal">
+    <div class="modal-title">新增資料</div>
+    <div class="modal-field"><label class="modal-label">標題（選填）</label><input class="modal-input" id="new-mood-title" placeholder="這是什麼..."></div>
+    <div class="modal-field"><label class="modal-label">資料夾</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px" id="mood-folder-picker"></div>
+      <div style="display:flex;gap:5px">
+        <input class="modal-input" id="new-mood-folder-input" placeholder="新資料夾名稱..." style="flex:1">
+        <button class="btn" id="btn-add-mood-folder"><i class="ti ti-plus"></i></button>
+      </div>
+    </div>
+    <div class="modal-field"><label class="modal-label">備註</label><input class="modal-input" id="new-mood-note" placeholder="來源、用途..."></div>
+    <div class="modal-field">
+      <label class="modal-label">圖片</label>
+      <div class="img-drop-area" id="mood-drop-area">
+        <i class="ti ti-photo-up" style="font-size:20px"></i><span>點擊上傳圖片</span>
+        <input type="file" id="mood-file-input" accept="image/*">
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;margin-top:7px">
+        <div style="flex:1;height:1px;background:var(--rule)"></div><span style="font-size:11px;color:var(--ink-faint)">或</span><div style="flex:1;height:1px;background:var(--rule)"></div>
+      </div>
+      <input class="modal-input" id="new-mood-url" placeholder="貼上圖片網址 https://..." style="margin-top:7px">
+      <div id="mood-img-preview" style="display:none;margin-top:7px"><img id="mood-preview-img" class="img-preview"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-new-mooditem">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-new-mooditem">新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-import-content">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-title">匯入內容</div>
+    <div class="modal-field">
+      <label class="modal-label">選擇作品</label>
+      <select class="modal-input" id="import-work-select" style="cursor:pointer">
+        <option value="">— 選擇作品 —</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">內容類型</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px" id="import-type-grid">
+        <label class="import-type-btn">
+          <input type="radio" name="import-type" value="chapter" checked style="display:none">
+          <i class="ti ti-book-2"></i><span>章節</span>
+        </label>
+        <label class="import-type-btn">
+          <input type="radio" name="import-type" value="chars" style="display:none">
+          <i class="ti ti-users"></i><span>人物設定</span>
+        </label>
+        <label class="import-type-btn">
+          <input type="radio" name="import-type" value="outline" style="display:none">
+          <i class="ti ti-list"></i><span>故事大綱</span>
+        </label>
+        <label class="import-type-btn">
+          <input type="radio" name="import-type" value="world" style="display:none">
+          <i class="ti ti-map"></i><span>世界觀設定</span>
+        </label>
+        <label class="import-type-btn" style="grid-column:1/-1">
+          <input type="radio" name="import-type" value="other" style="display:none">
+          <i class="ti ti-file-text"></i><span>其他文件</span>
+        </label>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">上傳檔案</label>
+      <div class="img-drop-area" id="import-drop-area" style="min-height:80px">
+        <i class="ti ti-file-upload" style="font-size:22px"></i>
+        <span id="import-drop-label">點擊選擇或拖曳檔案</span>
+        <span style="font-size:11px;color:var(--ink-faint)">支援 .txt、.md、.docx</span>
+        <input type="file" id="import-file-content" accept=".txt,.md,.docx,.doc">
+      </div>
+    </div>
+    <div id="import-preview-box" style="display:none;background:var(--paper-mid);border-radius:7px;padding:10px 13px;font-size:12px;color:var(--ink-muted);line-height:1.6;max-height:110px;overflow-y:auto;margin-bottom:4px"></div>
+    <div class="modal-actions">
+      <button class="btn" id="btn-cancel-import-content">取消</button>
+      <button class="btn btn-primary" id="btn-confirm-import-content" disabled><i class="ti ti-check"></i> 匯入</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-btn active" id="mnav-home" onclick="mobileNav('home')"><i class="ti ti-layout-grid"></i>作品</button>
+  <button class="mobile-nav-btn" id="mnav-sparks" onclick="mobileNav('sparks')"><i class="ti ti-bulb"></i>靈感</button>
+  <button class="mobile-nav-btn" id="mnav-menu" onclick="openMobileDrawer()"><i class="ti ti-menu-2"></i>選單</button>
+  <button class="mobile-nav-btn" id="mnav-settings" onclick="mobileNav('settings')"><i class="ti ti-settings"></i>設定</button>
+</nav>
+
+<!-- MOBILE DRAWER (sidebar replacement) -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="mobile-drawer-backdrop" onclick="closeMobileDrawer()"></div>
+  <div class="mobile-drawer-panel">
+    <div class="sidebar-header" id="mobile-drawer-home-btn" style="cursor:pointer" onclick="closeMobileDrawer();mobileNav('home')">
+      <div><div class="app-title">Unwritten</div><div class="app-sub">Your writing nest</div></div>
+      <i class="ti ti-x" style="font-size:18px;color:var(--ink-faint)" onclick="event.stopPropagation();closeMobileDrawer()"></i>
+    </div>
+    <div style="flex:1;overflow-y:auto">
+      <div class="sidebar-sec">
+        <div class="sidebar-label">靈感蒐集</div>
+        <button class="s-item" onclick="closeMobileDrawer();mobileNav('sparks')"><i class="ti ti-bulb"></i> 靈光一閃</button>
+        <button class="s-item" onclick="closeMobileDrawer();mobileNav('moodboard')"><i class="ti ti-photo"></i> 資料蒐集</button>
+      </div>
+      <div class="sidebar-sec">
+        <div class="sidebar-label">外部連結</div>
+        <div id="mobile-global-links" style="padding:3px 0"></div>
+        <button class="s-add" onclick="closeMobileDrawer();gel('btn-add-global-link').click()"><i class="ti ti-plus"></i> 新增連結</button>
+      </div>
+      <div class="sidebar-sec">
+        <div class="sidebar-label">作品</div>
+        <div id="mobile-works-nav"></div>
+        <button class="s-add" onclick="closeMobileDrawer();openNewWorkModal()"><i class="ti ti-plus"></i> 新增作品</button>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--rule);padding:6px 0 10px">
+      <a href="https://kisugi0009.github.io/Unwritten/privacy.html" target="_blank" class="s-item" style="font-size:12px"><i class="ti ti-shield-lock"></i> 隱私權政策</a>
+      <a href="https://github.com/kisugi0009/Unwritten/issues" target="_blank" class="s-item" style="font-size:12px"><i class="ti ti-brand-github"></i> 回報問題</a>
+      <div style="font-size:10px;color:var(--ink-faint);padding:4px 16px">© 2026 Unwritten</div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="modal-bg" id="modal-lightbox">
+  <div class="modal" style="max-width:560px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
+      <div class="modal-title" id="lightbox-title" style="margin-bottom:0"></div>
+      <button class="btn" onclick="closeModal('lightbox')" style="flex-shrink:0;padding:3px 7px"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="lightbox-img-wrap" style="display:none;margin-bottom:12px">
+      <img id="lightbox-img" style="max-width:100%;border-radius:8px;object-fit:contain;max-height:340px;display:block;margin:0 auto">
+    </div>
+    <div id="lightbox-body" style="font-size:14px;line-height:1.8;color:var(--ink);white-space:pre-wrap"></div>
+    <div id="lightbox-meta" style="font-size:11px;color:var(--ink-faint);margin-top:12px"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+// ── CONSTANTS ─────────────────────────────
+const SPINE_COLORS={yellow:'#d97706',rose:'#e11d48',sage:'#16a34a',sky:'#2563eb'};
+const SPINE_FILLS={yellow:'#fef3c7',rose:'#ffe4e6',sage:'#d1fae5',sky:'#dbeafe'};
+const CHAR_COLORS=['yellow','rose','sage','sky'];
+const WORLD_ICONS=['ti-map','ti-history','ti-wand','ti-shield','ti-sword','ti-crown','ti-building','ti-leaf','ti-star','ti-flask','ti-users','ti-book','ti-world','ti-mountain','ti-sun'];
+const GOOGLE_CLIENT_ID='26395261974-rh1aem2j87bhdrddse5vppt40mg3qgas.apps.googleusercontent.com';
+const DROPBOX_APP_KEY='2ggtszeq98mnz14';
+const ONEDRIVE_CLIENT_ID='';
+const DRIVE_FILE='unwritten_backup.json';
+
+// ── STATE ──────────────────────────────────
+const S={
+  works:[],sparks:[],docs:{},moodItems:[],globalLinks:[],
+  curWorkId:null,curCharIdx:null,curWorldCat:null,curChapter:null,
+  chSort:'asc',chSearch:'',curVolIdx:null,
+  selSpineColor:'yellow',selSparkColor:'yellow',selWorldIcon:'ti-map',
+  selCategory:null,_modalSelCat:null,_modalMoodFolder:null,
+  theme:'default',customTheme:{paper:'#faf7f2',ink:'#2c2416',accent:'#8b6e4e'},
+  fontSize:'15px',fontWeight:'400',fontFamily:"'Noto Serif TC',serif",
+  driveToken:null,driveFileId:null,driveSyncing:false,driveTimer:null,
+  dropboxToken:null,dropboxSyncing:false,dropboxTimer:null,
+  onedriveToken:null,onedriveSyncing:false,onedriveTimer:null,
+  moodFolder:null,
+};
+
+// ── UTILS ──────────────────────────────────
+const gel=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const today=()=>new Date().toLocaleDateString('zh-TW',{month:'short',day:'numeric'});
+
+function getDocs(id){
+  if(!S.docs[id])S.docs[id]={chars:[],files:[],outline:[],world:{cats:[]},chapters:[],volumes:[],cover:null};
+  const d=S.docs[id];
+  if(!d.world)d.world={cats:[]};
+  if(!d.chapters)d.chapters=[];
+  if(!d.volumes)d.volumes=[];
+  return d;
+}
+const curWork=()=>S.works.find(w=>w.id===S.curWorkId)||null;
+
+function toast(msg){const t=gel('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+
+function dl(name,content,type='text/plain;charset=utf-8'){
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name});
+  a.click();URL.revokeObjectURL(a.href);
+}
+
+// ── PERSIST ────────────────────────────────
+function save(){
+  try{localStorage.setItem('unwritten_v1',JSON.stringify({works:S.works,sparks:S.sparks,docs:S.docs,moodItems:S.moodItems,globalLinks:S.globalLinks,theme:S.theme,customTheme:S.customTheme,fontSize:S.fontSize,fontWeight:S.fontWeight,fontFamily:S.fontFamily,driveFileId:S.driveFileId}));}
+  catch(e){toast('⚠ 本機儲存失敗');}
+  driveSyncDebounce();
+}
+function load(){
+  try{
+    const raw=localStorage.getItem('unwritten_v1');
+    if(!raw)return;
+    const d=JSON.parse(raw);
+    Object.assign(S,{works:d.works||[],sparks:d.sparks||[],docs:d.docs||{},moodItems:d.moodItems||[],globalLinks:d.globalLinks||[],theme:d.theme||'default',customTheme:d.customTheme||S.customTheme,fontSize:d.fontSize||'15px',fontWeight:d.fontWeight||'400',fontFamily:d.fontFamily||"'Noto Serif TC',serif",driveFileId:d.driveFileId||null});
+  }catch(e){}
+}
+
+// ── THEME ──────────────────────────────────
+function applyTheme(t){
+  if(t)S.theme=t;
+  const th=S.theme==='default'?'':S.theme;
+  document.documentElement.setAttribute('data-theme',th);
+  if(S.theme==='custom')applyCustomThemeVars();
+  document.querySelectorAll('.theme-opt').forEach(b=>b.classList.toggle('active',b.dataset.theme===S.theme));
+  const builder=gel('custom-theme-builder');
+  if(builder)builder.style.display=S.theme==='custom'?'block':'none';
+}
+function applyFont(){
+  document.documentElement.style.setProperty('--font-size-base', S.fontSize);
+  document.documentElement.style.setProperty('--font-weight-base', S.fontWeight);
+  document.documentElement.style.setProperty('--font-family-base', S.fontFamily);
+  document.querySelectorAll('#font-size-opts .font-opt').forEach(b=>b.classList.toggle('active',b.dataset.size===S.fontSize));
+  document.querySelectorAll('#font-weight-opts .font-opt').forEach(b=>b.classList.toggle('active',b.dataset.weight===S.fontWeight));
+  document.querySelectorAll('#font-family-opts .font-opt').forEach(b=>b.classList.toggle('active',b.dataset.family===S.fontFamily));
+  const prev=gel('font-preview');
+  if(prev){prev.style.fontSize=S.fontSize;prev.style.fontWeight=S.fontWeight;prev.style.fontFamily=S.fontFamily;}
+}
+function bindFontButtons(){
+  gel('font-family-opts')?.querySelectorAll('.font-opt').forEach(btn=>btn.addEventListener('click',()=>{
+    S.fontFamily=btn.dataset.family;applyFont();save();
+  }));
+  gel('font-size-opts')?.querySelectorAll('.font-opt').forEach(btn=>btn.addEventListener('click',()=>{
+    S.fontSize=btn.dataset.size;applyFont();save();
+  }));
+  gel('font-weight-opts')?.querySelectorAll('.font-opt').forEach(btn=>btn.addEventListener('click',()=>{
+    S.fontWeight=btn.dataset.weight;applyFont();save();
+  }));
+}
+function applyCustomThemeVars(){
+  const ct=S.customTheme;
+  const r=document.documentElement.style;
+  // derive shades from base colors
+  r.setProperty('--c-paper',ct.paper);
+  r.setProperty('--c-paper-dark',blendHex(ct.paper,'#000',0.04));
+  r.setProperty('--c-paper-mid',blendHex(ct.paper,'#000',0.08));
+  r.setProperty('--c-ink',ct.ink);
+  r.setProperty('--c-ink-muted',blendHex(ct.ink,ct.paper,0.35));
+  r.setProperty('--c-ink-faint',blendHex(ct.ink,ct.paper,0.55));
+  r.setProperty('--c-accent',ct.accent);
+  r.setProperty('--c-accent-light',blendHex(ct.accent,ct.paper,0.82));
+  r.setProperty('--c-rule',blendHex(ct.ink,ct.paper,0.7));
+  // update swatch
+  const sw=gel('custom-theme-swatch');
+  if(sw)sw.style.background=`linear-gradient(to right,${ct.paper} 50%,${ct.accent} 50%)`;
+}
+function blendHex(hex1,hex2,t){
+  const parse=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const [r1,g1,b1]=parse(hex1);const[r2,g2,b2]=parse(hex2);
+  const r=Math.round(r1+(r2-r1)*t),g=Math.round(g1+(g2-g1)*t),b=Math.round(b1+(b2-b1)*t);
+  return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+// custom theme color pickers
+['cp-paper','cp-ink','cp-accent'].forEach(id=>{
+  const el=gel(id);if(!el)return;
+  el.addEventListener('input',()=>{
+    const map={paper:'paper',ink:'ink',accent:'accent'};
+    S.customTheme[id.replace('cp-','')]=el.value;
+  });
+});
+gel('btn-apply-custom')?.addEventListener('click',()=>{
+  applyCustomThemeVars();
+  const ct=S.customTheme;
+  gel('custom-theme-swatch').style.background=`linear-gradient(to right,${ct.paper} 50%,${ct.accent} 50%)`;
+  save();toast('自訂主題已套用');
+});
+
+// ── PANELS ────────────────────────────────
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(p=>{p.classList.remove('active');p.style.display='none';});
+  document.querySelectorAll('.s-item,.w-sub').forEach(b=>b.classList.remove('active'));
+  const panel=gel('panel-'+name);
+  if(panel){
+    if(name==='chapters'){panel.style.display='flex';}
+    else{panel.style.display='block';}
+    panel.classList.add('active');
+  }
+  gel('nav-'+name)?.classList.add('active');
+  setBreadcrumb(name);
+}
+function setBreadcrumb(panel){
+  const ICONS={home:'ti-layout-grid',sparks:'ti-bulb',moodboard:'ti-photo','work-home':'ti-book',chars:'ti-users',outline:'ti-list',editor:'ti-file-text','char-profile':'ti-user',world:'ti-map',chapters:'ti-book-2',settings:'ti-settings'};
+  const w=curWork();
+  const edTitle=gel('editor-title')?.value||'新文件';
+  const chName=gel('char-name')?.value||'人物';
+  const LABELS={home:'所有作品',sparks:'靈光一閃',moodboard:'資料蒐集',settings:'設定',
+    'work-home':w?.name||'','chars':(w?w.name+' / ':'')+'人物設定',
+    outline:(w?w.name+' / ':'')+'故事大綱',world:(w?w.name+' / ':'')+'世界觀設定',
+    chapters:(w?w.name+' / ':'')+'章節',editor:(w?w.name+' / ':'')+edTitle,
+    'char-profile':(w?w.name+' / ':'')+chName};
+  gel('breadcrumb').innerHTML='';
+}
+
+// ── MODALS ────────────────────────────────
+function openModal(id){gel('modal-'+id).classList.add('show');setTimeout(()=>gel('modal-'+id).querySelector('input,textarea')?.focus(),80);}
+function closeModal(id){gel('modal-'+id).classList.remove('show');}
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('show');}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg.show').forEach(m=>m.classList.remove('show'));});
+
+// color dots — delegation
+function bindColorDots(modalId,stateKey){
+  gel('modal-'+modalId)?.querySelectorAll('.color-dot').forEach(dot=>dot.addEventListener('click',()=>{
+    gel('modal-'+modalId).querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
+    dot.classList.add('selected');S[stateKey]=dot.dataset.color;
+  }));
+}
+bindColorDots('new-work','selSpineColor');
+bindColorDots('new-spark','selSparkColor');
+
+function resetColorDots(modalId,def){gel('modal-'+modalId)?.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('selected',d.dataset.color===def));}
+
+// ── GOOGLE DRIVE ──────────────────────────
+function updateDriveUI(){
+  const el=gel('drive-status-el');
+  const driveLabel=gel('drive-btn-label');
+  if(!el)return;
+  // topbar — show which provider is active
+  const any=S.driveToken||S.dropboxToken||S.onedriveToken;
+  const syncing=S.driveSyncing||S.dropboxSyncing||S.onedriveSyncing;
+  if(any||syncing){
+    const cls=syncing?'spin':'on';
+    el.innerHTML=`<span class="drive-dot ${cls}"></span>${syncing?'同步中':'已連線'}`;
+  }else{el.innerHTML='';}
+  if(driveLabel)driveLabel.textContent=any?' 備份至雲端':' 連結雲端';
+  // settings cards
+  updateCloudCard('google',GOOGLE_CLIENT_ID!=='',S.driveToken,S.driveSyncing,'btn-cloud-google','cloud-status-google','cloud-card-google');
+  updateCloudCard('dropbox',DROPBOX_APP_KEY!=='',S.dropboxToken,S.dropboxSyncing,'btn-cloud-dropbox','cloud-status-dropbox','cloud-card-dropbox');
+  updateCloudCard('onedrive',ONEDRIVE_CLIENT_ID!=='',S.onedriveToken,S.onedriveSyncing,'btn-cloud-onedrive','cloud-status-onedrive','cloud-card-onedrive');
+}
+
+function updateCloudCard(name,configured,token,syncing,btnId,statusId,cardId){
+  const btn=gel(btnId),status=gel(statusId),card=gel(cardId);
+  if(!btn||!status)return;
+  if(!configured){
+    status.textContent='需填入 Client ID';status.className='cloud-provider-status';
+    btn.textContent='查看說明';btn.onclick=()=>showCloudHelp(name);
+    if(card)card.classList.remove('connected');return;
+  }
+  if(syncing){status.innerHTML='<span class="drive-dot spin"></span>同步中';status.className='cloud-provider-status spin';}
+  else if(token){status.innerHTML='<span class="drive-dot on"></span>已連線';status.className='cloud-provider-status on';if(card)card.classList.add('connected');}
+  else{status.textContent='未連線';status.className='cloud-provider-status';if(card)card.classList.remove('connected');}
+  btn.textContent=token?'立即備份':'連結';
+  btn.onclick=()=>handleCloudAuth(name);
+}
+
+function showCloudHelp(provider){
+  const help={
+    google:'Google Drive 設定步驟：\n1. 前往 console.cloud.google.com\n2. 建立專案 → 啟用 Google Drive API\n3. 建立 OAuth 2.0 憑證（網頁應用程式）\n4. 授權的 JavaScript 來源填入你的網頁網址\n5. 把 Client ID 貼入 HTML 頂部的 GOOGLE_CLIENT_ID',
+    dropbox:'Dropbox 設定步驟：\n1. 前往 www.dropbox.com/developers/apps\n2. 建立 App → 選 Scoped access → Full Dropbox\n3. 在 Settings 找到 App key\n4. 在 OAuth2 的 Redirect URIs 加入你的網頁網址\n5. 把 App key 貼入 HTML 頂部的 DROPBOX_APP_KEY',
+    onedrive:'OneDrive 設定步驟：\n1. 前往 portal.azure.com → App registrations\n2. 新增應用程式 → 設定 Redirect URI（SPA 類型）填入你的網頁網址\n3. 在 API permissions 加入 Files.ReadWrite\n4. 複製 Application (client) ID\n5. 把 Client ID 貼入 HTML 頂部的 ONEDRIVE_CLIENT_ID',
+  };
+  alert(help[provider]||'');
+}
+
+function handleCloudAuth(provider){
+  if(provider==='google')handleGoogleAuth();
+  else if(provider==='dropbox')handleDropboxAuth();
+  else if(provider==='onedrive')handleOnedriveAuth();
+}
+
+// ── GOOGLE DRIVE ──────────────────────────
+function driveSyncDebounce(){
+  if(!S.driveToken||GOOGLE_CLIENT_ID==='')return;
+  clearTimeout(S.driveTimer);S.driveTimer=setTimeout(driveSync,3000);
+}
+async function driveSync(){
+  if(!S.driveToken)return;
+  S.driveSyncing=true;updateDriveUI();
+  const data=JSON.stringify({works:S.works,sparks:S.sparks,docs:S.docs,moodItems:S.moodItems,globalLinks:S.globalLinks});
+  try{
+    if(S.driveFileId){
+      await fetch(`https://www.googleapis.com/upload/drive/v3/files/${S.driveFileId}?uploadType=media`,{method:'PATCH',headers:{'Authorization':'Bearer '+S.driveToken,'Content-Type':'application/json'},body:data});
+    }else{
+      const list=await fetch(`https://www.googleapis.com/drive/v3/files?q=name='${DRIVE_FILE}' and trashed=false`,{headers:{'Authorization':'Bearer '+S.driveToken}}).then(r=>r.json());
+      if(list.files?.length){
+        S.driveFileId=list.files[0].id;
+        await fetch(`https://www.googleapis.com/upload/drive/v3/files/${S.driveFileId}?uploadType=media`,{method:'PATCH',headers:{'Authorization':'Bearer '+S.driveToken,'Content-Type':'application/json'},body:data});
+      }else{
+        const meta=await fetch('https://www.googleapis.com/drive/v3/files',{method:'POST',headers:{'Authorization':'Bearer '+S.driveToken,'Content-Type':'application/json'},body:JSON.stringify({name:DRIVE_FILE,mimeType:'application/json'})}).then(r=>r.json());
+        S.driveFileId=meta.id;
+        await fetch(`https://www.googleapis.com/upload/drive/v3/files/${meta.id}?uploadType=media`,{method:'PATCH',headers:{'Authorization':'Bearer '+S.driveToken,'Content-Type':'application/json'},body:data});
+      }
+      try{localStorage.setItem('unwritten_driveid',S.driveFileId);}catch(e){}
+    }
+    toast('已備份至 Google Drive');
+  }catch(e){toast('Google Drive 備份失敗');}
+  S.driveSyncing=false;updateDriveUI();
+}
+function handleGoogleAuth(onSuccess){
+  if(GOOGLE_CLIENT_ID===''){showCloudHelp('google');return;}
+  if(S.driveToken){driveSync();if(onSuccess)onSuccess();return;}
+  google.accounts.oauth2.initTokenClient({
+    client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.file',
+    callback:res=>{if(res.access_token){S.driveToken=res.access_token;updateDriveUI();driveSync();if(onSuccess)onSuccess();}}
+  }).requestAccessToken();
+}
+// keep old name for welcome modal
+const handleDriveAuth=handleGoogleAuth;
+
+// ── DROPBOX ───────────────────────────────
+function handleDropboxAuth(){
+  if(DROPBOX_APP_KEY===''){showCloudHelp('dropbox');return;}
+  if(S.dropboxToken){dropboxSync();return;}
+  // Dropbox uses implicit OAuth flow via redirect
+  const redirectUri=encodeURIComponent('https://kisugi0009.github.io/Unwritten');
+  const url=`https://www.dropbox.com/oauth2/authorize?client_id=${DROPBOX_APP_KEY}&response_type=token&redirect_uri=${redirectUri}&token_access_type=legacy`;
+  // open popup to handle redirect
+  const w=window.open(url,'dropbox_auth','width=600,height=700');
+  const poll=setInterval(()=>{
+    try{
+      if(w.closed){clearInterval(poll);return;}
+      const hash=w.location.hash;
+      if(hash&&hash.includes('access_token')){
+        clearInterval(poll);w.close();
+        const params=new URLSearchParams(hash.slice(1));
+        S.dropboxToken=params.get('access_token');
+        updateDriveUI();dropboxSync();toast('Dropbox 已連線');
+      }
+    }catch(e){}
+  },500);
+}
+async function dropboxSync(){
+  if(!S.dropboxToken)return;
+  S.dropboxSyncing=true;updateDriveUI();
+  const data=JSON.stringify({works:S.works,sparks:S.sparks,docs:S.docs,moodItems:S.moodItems,globalLinks:S.globalLinks});
+  try{
+    await fetch('https://content.dropboxapi.com/2/files/upload',{
+      method:'POST',
+      headers:{
+        'Authorization':'Bearer '+S.dropboxToken,
+        'Content-Type':'application/octet-stream',
+        'Dropbox-API-Arg':JSON.stringify({path:'/'+DRIVE_FILE,mode:'overwrite',autorename:false})
+      },body:data
+    });
+    toast('已備份至 Dropbox');
+  }catch(e){toast('Dropbox 備份失敗');}
+  S.dropboxSyncing=false;updateDriveUI();
+}
+
+// ── ONEDRIVE ──────────────────────────────
+function handleOnedriveAuth(){
+  if(ONEDRIVE_CLIENT_ID===''){showCloudHelp('onedrive');return;}
+  if(S.onedriveToken){onedriveSync();return;}
+  const redirectUri=encodeURIComponent(location.href.split('#')[0]);
+  const url=`https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${ONEDRIVE_CLIENT_ID}&response_type=token&redirect_uri=${redirectUri}&scope=Files.ReadWrite%20offline_access`;
+  const w=window.open(url,'onedrive_auth','width=600,height=700');
+  const poll=setInterval(()=>{
+    try{
+      if(w.closed){clearInterval(poll);return;}
+      const hash=w.location.hash;
+      if(hash&&hash.includes('access_token')){
+        clearInterval(poll);w.close();
+        const params=new URLSearchParams(hash.slice(1));
+        S.onedriveToken=params.get('access_token');
+        updateDriveUI();onedriveSync();toast('OneDrive 已連線');
+      }
+    }catch(e){}
+  },500);
+}
+async function onedriveSync(){
+  if(!S.onedriveToken)return;
+  S.onedriveSyncing=true;updateDriveUI();
+  const data=JSON.stringify({works:S.works,sparks:S.sparks,docs:S.docs,moodItems:S.moodItems,globalLinks:S.globalLinks});
+  try{
+    await fetch(`https://graph.microsoft.com/v1.0/me/drive/root:/${DRIVE_FILE}:/content`,{
+      method:'PUT',headers:{'Authorization':'Bearer '+S.onedriveToken,'Content-Type':'application/json'},body:data
+    });
+    toast('已備份至 OneDrive');
+  }catch(e){toast('OneDrive 備份失敗');}
+  S.onedriveSyncing=false;updateDriveUI();
+}
+
+// unified backup — syncs all connected providers
+function backupToCloud(){
+  let synced=false;
+  if(S.driveToken){driveSync();synced=true;}
+  if(S.dropboxToken){dropboxSync();synced=true;}
+  if(S.onedriveToken){onedriveSync();synced=true;}
+  if(!synced){
+    // none connected — go to settings
+    showPanel('settings');
+    setTimeout(()=>document.querySelector('.settings-sec-title')?.scrollIntoView({behavior:'smooth'}),100);
+    toast('請先在設定頁連結雲端服務');
+  }
+}
+
+// Welcome modal
+function checkWelcome(){
+  if(localStorage.getItem('unwritten_welcomed'))return;
+  const anyConfigured=GOOGLE_CLIENT_ID!==''||DROPBOX_APP_KEY!==''||ONEDRIVE_CLIENT_ID!=='';
+  if(!anyConfigured)return;
+  gel('modal-welcome').classList.add('show');
+}
+gel('btn-welcome-drive')?.addEventListener('click',()=>{
+  closeModal('welcome');localStorage.setItem('unwritten_welcomed','1');
+  showPanel('settings');
+});
+gel('btn-welcome-skip')?.addEventListener('click',()=>{
+  closeModal('welcome');localStorage.setItem('unwritten_welcomed','1');
+});
+
+// ── WORKS ─────────────────────────────────
+function getAllCategories(){const cats=new Set();S.works.forEach(w=>{if(w.category)cats.add(w.category);});return[...cats].sort();}
+
+function renderWorksGrid(){
+  const grid=gel('works-grid');
+  const wsm=selectMode.works;
+  if(wsm)grid.classList.add('select-mode'); else grid.classList.remove('select-mode');
+  const filtered=S.selCategory?S.works.filter(w=>w.category===S.selCategory):S.works;
+  grid.innerHTML=filtered.map(w=>{
+    const d=getDocs(w.id);
+    const coverHtml=d.cover?`<img class="work-cover" src="${d.cover}" alt="">`:'';
+    return`<div class="work-card selectable${BATCH.works.has(w.id)?' selected':''}" data-id="${w.id}">
+      <div class="sel-check"></div>
+      <div class="work-spine" style="background:${SPINE_COLORS[w.color]||SPINE_COLORS.yellow}"></div>
+      ${coverHtml}
+      <div class="work-name">${esc(w.name)}</div>
+      <div class="work-genre">${esc(w.genre||'未分類')}</div>
+      ${w.category?`<div class="work-cat-badge">${esc(w.category)}</div>`:''}
+      <div class="work-stats">
+        <span class="stat-pill"><i class="ti ti-users" style="font-size:9px"></i>${d.chars.length}</span>
+        <span class="stat-pill"><i class="ti ti-book-2" style="font-size:9px"></i>${d.chapters.length} 章</span>
+      </div></div>`;
+  }).join('')+'<button class="add-work-card" id="btn-add-work-card"><i class="ti ti-plus"></i>建立新作品</button>';
+  grid.querySelectorAll('.work-card').forEach(card=>card.addEventListener('click',()=>{
+    if(wsm){
+      const id=card.dataset.id;
+      if(BATCH.works.has(id))BATCH.works.delete(id);else BATCH.works.add(id);
+      card.classList.toggle('selected',BATCH.works.has(id));
+      updateBatchBar('works','works-batch-bar');return;
+    }
+    openWork(card.dataset.id);
+  }));
+  gel('btn-add-work-card').addEventListener('click',openNewWorkModal);
+  renderCategoryFilter();
+}
+
+function renderCategoryFilter(){
+  const bar=gel('cat-filter-bar');
+  const cats=getAllCategories();
+  if(!cats.length){bar.innerHTML='';return;}
+  bar.innerHTML=`<button class="cat-tag${!S.selCategory?' active':''}" data-cat="">全部</button>`+
+    cats.map(c=>`<button class="cat-tag${S.selCategory===c?' active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+  bar.querySelectorAll('.cat-tag').forEach(btn=>btn.addEventListener('click',()=>{S.selCategory=btn.dataset.cat||null;renderWorksGrid();}));
+}
+
+function renderWorksSidebar(){
+  gel('works-nav').innerHTML=S.works.map(w=>`
+    <div>
+      <div class="work-hdr" data-id="${w.id}">
+        <span class="work-hdr-name"><span style="width:7px;height:7px;border-radius:50%;background:${SPINE_COLORS[w.color]};display:inline-block;flex-shrink:0"></span>${esc(w.name)}</span>
+        <i class="ti ti-chevron-down work-chev" id="chev-${w.id}"></i>
+      </div>
+      <div id="subnav-${w.id}" style="display:none">
+        <button class="w-sub" data-id="${w.id}" data-sec="overview"><i class="ti ti-layout-2"></i> 概覽</button>
+        <button class="w-sub" data-id="${w.id}" data-sec="chapters"><i class="ti ti-book-2"></i> 章節</button>
+        <button class="w-sub" data-id="${w.id}" data-sec="chars"><i class="ti ti-users"></i> 人物設定</button>
+        <button class="w-sub" data-id="${w.id}" data-sec="outline"><i class="ti ti-list"></i> 故事大綱</button>
+        <button class="w-sub" data-id="${w.id}" data-sec="world"><i class="ti ti-map"></i> 世界觀設定</button>
+      </div>
+    </div>`).join('');
+  gel('works-nav').querySelectorAll('.work-hdr').forEach(h=>h.addEventListener('click',()=>toggleWorkNav(h.dataset.id)));
+  gel('works-nav').querySelectorAll('.w-sub').forEach(btn=>btn.addEventListener('click',()=>btn.dataset.sec==='overview'?openWork(btn.dataset.id):openSection(btn.dataset.id,btn.dataset.sec)));
+}
+
+function toggleWorkNav(id){
+  const sub=gel('subnav-'+id),chev=gel('chev-'+id);
+  const open=sub.style.display!=='none';
+  sub.style.display=open?'none':'block';
+  chev.style.transform=open?'':'rotate(180deg)';
+}
+
+function openWork(id){
+  S.curWorkId=id;
+  const w=curWork(),d=getDocs(id);
+  gel('work-home-title').textContent=w.name;
+  gel('work-home-desc').textContent=(w.genre?w.genre+'　·　':'')+'點擊下方按鈕開始建立內容';
+  // cover area
+  renderWorkCoverArea(id);
+  // docs list — show only non-chapter files
+  renderWorkDocs(id);
+  // action buttons
+  const ab=gel('work-action-btns');ab.innerHTML='';
+  [{label:'章節',icon:'ti-book-2',sec:'chapters'},{label:'新增人物',icon:'ti-user-plus',sec:'chars'},
+   {label:'故事大綱',icon:'ti-list',sec:'outline'},{label:'世界觀設定',icon:'ti-map',sec:'world'}
+  ].forEach(item=>{const b=document.createElement('button');b.className='btn';b.innerHTML=`<i class="ti ${item.icon}"></i> ${item.label}`;b.addEventListener('click',()=>openSection(id,item.sec));ab.appendChild(b);});
+  // new blank file button
+  const newFileBtn=document.createElement('button');
+  newFileBtn.className='btn';
+  newFileBtn.innerHTML='<i class="ti ti-file-plus"></i> 新增文件';
+  newFileBtn.addEventListener('click',()=>newFile(id,'other'));
+  ab.appendChild(newFileBtn);
+  gel('btn-delete-work').onclick=()=>deleteWork(id);
+  showPanel('work-home');
+  document.querySelectorAll('.w-sub').forEach(b=>b.classList.remove('active'));
+  gel('subnav-'+id).style.display='block';gel('chev-'+id).style.transform='rotate(180deg)';
+  gel('subnav-'+id).querySelector('[data-sec="overview"]')?.classList.add('active');
+  gel('breadcrumb').innerHTML=`<i class="ti ti-book" style="font-size:14px"></i><strong>${esc(w.name)}</strong>`;
+}
+
+function renderWorkCoverArea(workId){
+  const d=getDocs(workId);
+  const area=gel('work-cover-area');
+  area.innerHTML=d.cover
+    ?`<div style="display:flex;align-items:flex-start;gap:12px"><img src="${d.cover}" style="height:100px;border-radius:7px;object-fit:cover;border:1px solid var(--rule)"><div style="display:flex;flex-direction:column;gap:7px"><label class="btn" style="cursor:pointer"><i class="ti ti-replace"></i> 更換封面<input type="file" accept="image/*" style="display:none" id="cover-upload-input"></label><button class="btn btn-danger" id="btn-remove-cover" style="padding:3px 8px"><i class="ti ti-trash"></i> 移除</button></div></div>`
+    :`<label class="btn" style="cursor:pointer"><i class="ti ti-photo-up"></i> 上傳封面<input type="file" accept="image/*" style="display:none" id="cover-upload-input"></label>`;
+  gel('cover-upload-input')?.addEventListener('change',function(){
+    if(!this.files[0])return;
+    const r=new FileReader();r.onload=ev=>{d.cover=ev.target.result;save();renderWorkCoverArea(workId);toast('封面已更新');};r.readAsDataURL(this.files[0]);
+  });
+  gel('btn-remove-cover')?.addEventListener('click',()=>{d.cover=null;save();renderWorkCoverArea(workId);toast('封面已移除');});
+}
+
+function renderWorkDocs(workId){
+  const d=getDocs(workId);
+  const list=gel('work-docs-list');
+  const rows=[];
+
+  // chapters summary
+  if(d.chapters.length){
+    rows.push({
+      icon:'ti-book-2',label:'章節',
+      desc:`共 ${d.chapters.length} 章`,
+      onclick:()=>openSection(workId,'chapters')
+    });
+  }
+
+  // chars
+  if(d.chars.length){
+    rows.push({
+      icon:'ti-users',label:'人物設定',
+      desc:`${d.chars.length} 位人物`,
+      onclick:()=>openSection(workId,'chars')
+    });
+  }
+
+  // outline
+  if(d.outline.length){
+    rows.push({
+      icon:'ti-list',label:'故事大綱',
+      desc:`${d.outline.length} 個章節條目`,
+      onclick:()=>openSection(workId,'outline')
+    });
+  }
+
+  // world
+  const outlineTree=d.outlineTree||[];
+  if(outlineTree.length){
+    rows.push({
+      icon:'ti-list',label:'故事大綱',
+      desc:`${outlineTree.length} 個項目`,
+      onclick:()=>openSection(workId,'outline')
+    });
+  }
+  const worldCats=d.world?.cats||[];
+  if(worldCats.length){
+    rows.push({
+      icon:'ti-map',label:'世界觀設定',
+      desc:`${worldCats.length} 個分類`,
+      onclick:()=>openSection(workId,'world')
+    });
+  }
+
+  // extra files (imported or manually created)
+  const TYPE_LABEL={world:'世界觀',char:'人物設定',outline:'大綱',other:'其他文件'};
+  const TYPE_ICON={world:'ti-map',char:'ti-user',outline:'ti-list',other:'ti-file'};
+  d.files.forEach((f,i)=>{
+    rows.push({
+      icon:TYPE_ICON[f.type]||'ti-file',
+      label:f.title||'（無標題）',
+      desc:TYPE_LABEL[f.type]||'文件',
+      onclick:()=>openFile(workId,i)
+    });
+  });
+
+  if(!rows.length){
+    list.innerHTML='<div style="font-size:13px;color:var(--ink-faint);padding:6px 0">還沒有任何內容，點下方按鈕開始建立。</div>';
+    return;
+  }
+
+  list.innerHTML=rows.map((r,i)=>`
+    <div class="doc-item" data-row="${i}">
+      <i class="ti ${r.icon}" style="font-size:15px;color:var(--accent)"></i>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;color:var(--ink)">${esc(r.label)}</div>
+        <div style="font-size:11px;color:var(--ink-faint)">${esc(r.desc)}</div>
+      </div>
+      <i class="ti ti-chevron-right" style="font-size:13px;color:var(--ink-faint)"></i>
+    </div>`).join('');
+
+  list.querySelectorAll('.doc-item').forEach((el,i)=>{
+    el.addEventListener('click',rows[i].onclick);
+  });
+}
+
+function deleteWork(id){
+  const w=S.works.find(x=>x.id===id);
+  if(!confirm(`確定要刪除《${w?.name||'此作品'}》嗎？`))return;
+  S.works=S.works.filter(x=>x.id!==id);delete S.docs[id];S.curWorkId=null;
+  save();renderAll();showPanel('home');toast('作品已刪除');
+}
+
+function openNewWorkModal(){
+  gel('new-work-name').value='';gel('new-work-genre').value='';gel('new-work-has-volumes').checked=false;
+  S.selSpineColor='yellow';S._modalSelCat=null;
+  resetColorDots('new-work','yellow');
+  renderCategoryPicker(null);gel('new-work-cat-input').value='';
+  openModal('new-work');
+}
+
+function renderCategoryPicker(sel){
+  const cats=getAllCategories();const picker=gel('work-cat-picker');
+  picker.innerHTML=cats.map(c=>`<button class="cat-tag${sel===c?' active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+  picker.querySelectorAll('.cat-tag').forEach(btn=>btn.addEventListener('click',()=>{
+    picker.querySelectorAll('.cat-tag').forEach(b=>b.classList.remove('active'));
+    S._modalSelCat=S._modalSelCat===btn.dataset.cat?null:btn.dataset.cat;
+    if(S._modalSelCat)btn.classList.add('active');
+  }));
+}
+
+gel('btn-add-work-cat').addEventListener('click',()=>{
+  const val=gel('new-work-cat-input').value.trim();if(!val)return;
+  S._modalSelCat=val;gel('new-work-cat-input').value='';renderCategoryPicker(val);
+});
+gel('btn-confirm-new-work').addEventListener('click',()=>{
+  if(!requireField('new-work-name','作品名稱為必填'))return;
+  const name=gel('new-work-name').value.trim();if(!name)return;
+  const id='w'+Date.now();
+  S.works.push({id,name,genre:gel('new-work-genre').value.trim(),color:S.selSpineColor,category:S._modalSelCat||null,hasVolumes:gel('new-work-has-volumes').checked});
+  getDocs(id);closeModal('new-work');save();renderAll();openWork(id);
+});
+gel('btn-cancel-new-work').addEventListener('click',()=>closeModal('new-work'));
+
+// ── SECTIONS ──────────────────────────────
+function openSection(id,sec){
+  S.curWorkId=id;const w=curWork();
+  document.querySelectorAll('.w-sub').forEach(b=>b.classList.remove('active'));
+  gel('subnav-'+id)?.querySelector(`[data-sec="${sec}"]`)?.classList.add('active');
+
+  if(sec==='chars'){
+    gel('chars-panel-title').textContent=w.name+'　人物設定';
+    renderCharsList(id);showPanel('chars');
+    gel('btn-add-char').onclick=()=>openNewCharModal();
+    gel('breadcrumb').innerHTML=`<i class="ti ti-users" style="font-size:14px"></i><strong>${esc(w.name)} / 人物設定</strong>`;
+  }else if(sec==='outline'){
+    gel('outline-panel-title').textContent=w.name+'　故事大綱';
+    renderOutline(id);showPanel('outline');
+    const od=getDocs(id);if(!od.outlineTree)od.outlineTree=[];
+    gel('btn-add-outline-vol').onclick=()=>{od.outlineTree.push(outlineNewNode('vol'));save();renderOutline(id);renderWorkDocs(id);};
+    gel('btn-add-outline-ch').onclick=()=>{od.outlineTree.push(outlineNewNode('ch'));save();renderOutline(id);renderWorkDocs(id);};
+    gel('btn-outline-select-mode').onclick=()=>toggleSelectMode('outline','outline-batch-bar',()=>renderOutline(id));
+    gel('btn-outline-txt').onclick=()=>exportOutline(id,false);
+    gel('btn-outline-md').onclick=()=>exportOutline(id,true);
+    gel('breadcrumb').innerHTML=`<i class="ti ti-list" style="font-size:14px"></i><strong>${esc(w.name)} / 故事大綱</strong>`;
+  }else if(sec==='world'){
+    gel('world-panel-title').textContent=w.name+'　世界觀設定';
+    S.curWorldCat=null;renderWorld(id);showPanel('world');
+    gel('btn-world-add-cat-top').onclick=gel('btn-world-add-cat').onclick=()=>openNewWorldCatModal(id);
+    gel('btn-world-md').onclick=()=>exportWorld(id,true);
+    gel('btn-world-txt').onclick=()=>exportWorld(id,false);
+    gel('breadcrumb').innerHTML=`<i class="ti ti-map" style="font-size:14px"></i><strong>${esc(w.name)} / 世界觀設定</strong>`;
+  }else if(sec==='chapters'){
+    openChaptersSection(id);
+  }
+}
+
+// ── FILES / EDITOR ────────────────────────
+function newFile(workId,type){const d=getDocs(workId);d.files.push({title:'',type:type||'other',body:''});openFile(workId,d.files.length-1);}
+
+function openFile(workId,idx){
+  S.curWorkId=workId;const w=curWork(),f=getDocs(workId).files[idx];
+  gel('editor-title').value=f.title||'';
+  gel('editor-type').value=f.type||'other';
+  gel('editor-badge').innerHTML=`<span style="background:${SPINE_FILLS[w.color]||'#fef3c7'};color:${SPINE_COLORS[w.color]||'#d97706'};padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500">${esc(w.name)}</span>`;
+  // Init WYSIWYG
+  buildToolbar('editor-toolbar','editor-body','editor-wc');
+  wySetHTML('editor-body', f.body||'');
+  gel('editor-wc').textContent=(gel('editor-body')?.innerText||'').replace(/\s/g,'').length+' 字';
+  // Auto-save on input
+  gel('editor-body').oninput=()=>{ f.body=wyGetHTML('editor-body'); save(); };
+  gel('editor-title').oninput=()=>{ f.title=gel('editor-title').value; save(); setBreadcrumb('editor'); };
+  gel('editor-type').onchange=()=>{ f.type=gel('editor-type').value; save(); };
+  gel('editor-delete-btn').onclick=()=>{if(!confirm('確定要刪除？'))return;getDocs(workId).files.splice(idx,1);save();openWork(workId);toast('文件已刪除');};
+  gel('btn-export-txt').onclick=()=>{ dl((f.title||'文件')+'.txt',(f.title?f.title+'\n\n':'')+wyGetText('editor-body')); toast('已匯出 TXT'); };
+  gel('btn-export-md').onclick=()=>{ dl((f.title||'文件')+'.md',(f.title?'# '+f.title+'\n\n':'')+htmlToMd(wyGetHTML('editor-body'))); toast('已匯出 MD'); };
+  gel('btn-export-docx').onclick=()=>exportDOCX({title:f.title,body:wyGetText('editor-body')});
+  showPanel('editor');
+  document.querySelectorAll('.w-sub').forEach(b=>b.classList.remove('active'));
+  gel('breadcrumb').innerHTML=`<i class="ti ti-file-text" style="font-size:14px"></i><strong>${esc(w.name)} / ${esc(f.title||'新文件')}</strong>`;
+}
+
+// ── CHARACTERS ────────────────────────────
+function renderCharsList(workId){
+  const chars=getDocs(workId).chars,list=gel('chars-list');
+  if(!chars.length){list.innerHTML='<div style="font-size:13px;color:var(--ink-faint)">還沒有人物。</div>';return;}
+  list.innerHTML=chars.map((c,i)=>{
+    const hasPhoto=!!c.photo;
+    return`<div class="char-list-item" data-id="${workId}" data-idx="${i}">
+      <div class="char-list-avatar" style="${hasPhoto?'':('background:'+SPINE_FILLS[CHAR_COLORS[i%4]]+';color:'+SPINE_COLORS[CHAR_COLORS[i%4]])}">
+        ${hasPhoto?`<img src="${c.photo}" style="width:38px;height:38px;border-radius:6px;object-fit:cover">`:esc(c.name?c.name[0]:'?')}
+      </div>
+      <div><div style="font-size:14px;font-weight:500">${esc(c.name||'（未命名）')}</div><div style="font-size:12px;color:var(--ink-faint)">${esc(c.role||'—')}</div></div>
+      <i class="ti ti-chevron-right" style="font-size:13px;color:var(--ink-faint);margin-left:auto"></i>
+    </div>`;}).join('');
+  list.addEventListener('click', e=>{
+    const item=e.target.closest('.char-list-item');
+    if(item)openChar(item.dataset.id,+item.dataset.idx);
+  });
+}
+
+function openChar(workId,idx){
+  S.curWorkId=workId;S.curCharIdx=idx;
+  const w=curWork(),c=getDocs(workId).chars[idx];
+  // photo
+  const photoWrap=gel('char-photo-wrap');
+  const photoInput=gel('char-photo-input');
+  function refreshPhoto(){
+    if(c.photo){
+      photoWrap.innerHTML=`<img src="${c.photo}" style="width:64px;height:64px;border-radius:7px;object-fit:cover;display:block">`;
+      // small edit badge
+      const badge=document.createElement('div');
+      badge.style.cssText='position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:#fff';
+      badge.innerHTML='<i class="ti ti-pencil"></i>';
+      badge.onclick=()=>photoInput.click();
+      photoWrap.style.position='relative';
+      photoWrap.appendChild(badge);
+    }else{
+      photoWrap.innerHTML=`<i class="ti ti-user" style="pointer-events:none"></i>`;
+    }
+    // only the wrap itself triggers upload
+    photoWrap.onclick=()=>photoInput.click();
+  }
+  photoInput.addEventListener('change',function(){
+    if(!this.files[0])return;
+    const r=new FileReader();r.onload=ev=>{c.photo=ev.target.result;save();refreshPhoto();toast('照片已更新');};r.readAsDataURL(this.files[0]);
+  });
+  refreshPhoto();
+  const FIELDS=[['char-name','name'],['char-role','role'],['char-age','age'],['char-gender','gender'],['char-origin','origin'],['char-side','side'],['char-appearance','appearance'],['char-personality','personality'],['char-backstory','backstory']];
+  FIELDS.forEach(([eid,key])=>{const el=gel(eid);el.value=c[key]||'';el.oninput=()=>{c[key]=el.value;save();};});
+  gel('btn-delete-char').onclick=()=>{if(!confirm(`確定要刪除「${c.name||'此人物'}」嗎？`))return;getDocs(workId).chars.splice(idx,1);save();renderWorkDocs(workId);openSection(workId,'chars');toast('人物已刪除');};
+  gel('btn-char-back').onclick=()=>openSection(workId,'chars');
+  gel('btn-char-export-txt').onclick=()=>{dl((c.name||'人物')+'.txt',charToStr(c,false));toast('已匯出 TXT');};
+  gel('btn-char-export-md').onclick=()=>{dl((c.name||'人物')+'.md',charToStr(c,true));toast('已匯出 MD');};
+  renderCharCustomFields(c,workId,idx);
+  showPanel('char-profile');
+  gel('breadcrumb').innerHTML=`<i class="ti ti-user" style="font-size:14px"></i><strong>${esc(w.name)} / ${esc(c.name||'人物')}</strong>`;
+}
+
+function openNewCharModal(){gel('new-char-name').value='';gel('new-char-role-input').value='';openModal('new-char');}
+gel('btn-confirm-new-char').addEventListener('click',()=>{
+  if(!requireField('new-char-name','人物姓名為必填'))return;
+  const name=gel('new-char-name').value.trim();if(!name||!S.curWorkId)return;
+  getDocs(S.curWorkId).chars.push({name,role:gel('new-char-role-input').value.trim(),age:'',gender:'',origin:'',side:'',appearance:'',personality:'',backstory:'',photo:null});
+  closeModal('new-char');save();renderCharsList(S.curWorkId);renderWorkDocs(S.curWorkId);toast('人物已新增');
+});
+gel('btn-cancel-new-char').addEventListener('click',()=>closeModal('new-char'));
+
+function charToStr(c,md){
+  const h=md?'## ':'',sh=md?'### ':'';
+  let t=h+(c.name||'未命名')+'\n'+(c.role?(md?'> ':'')+c.role+'\n':'')+'\n';
+  [['年齡',c.age],['性別',c.gender],['出生地',c.origin],['陣營',c.side]].filter(x=>x[1]).forEach(([k,v])=>t+=`${k}：${v}　`);
+  t+='\n\n';
+  if(c.appearance)t+=sh+'外貌\n'+c.appearance+'\n\n';
+  if(c.personality)t+=sh+'個性\n'+c.personality+'\n\n';
+  if(c.backstory)t+=sh+'背景故事\n'+c.backstory+'\n';
+  return t;
+}
+
+// ── OUTLINE ───────────────────────────────
+function renderOutline(workId){
+  const chs=getDocs(workId).outline;
+  gel('outline-list').innerHTML=chs.map((ch,i)=>`<div class="outline-item">
+    <div class="outline-num">${i+1}</div>
+    <div style="flex:1">
+      <input class="outline-ch-inp" value="${esc(ch.title||'')}" placeholder="章節標題..." data-wid="${workId}" data-idx="${i}" data-field="title">
+      <input class="outline-sum-inp" value="${esc(ch.summary||'')}" placeholder="這一章發生的事…" data-wid="${workId}" data-idx="${i}" data-field="summary">
+    </div>
+    <button class="outline-del" data-wid="${workId}" data-idx="${i}"><i class="ti ti-x"></i></button>
+  </div>`).join('');
+  gel('outline-list').querySelectorAll('.outline-ch-inp,.outline-sum-inp').forEach(inp=>inp.addEventListener('input',()=>{getDocs(inp.dataset.wid).outline[+inp.dataset.idx][inp.dataset.field]=inp.value;save();}));
+  gel('outline-list').querySelectorAll('.outline-del').forEach(btn=>btn.addEventListener('click',()=>{getDocs(btn.dataset.wid).outline.splice(+btn.dataset.idx,1);save();renderOutline(btn.dataset.wid);renderWorkDocs(btn.dataset.wid);}));
+}
+
+// ── WORLD ─────────────────────────────────
+function renderWorld(workId){
+  const d=getDocs(workId);if(!d.world)d.world={cats:[]};
+  const cats=d.world.cats,catList=gel('world-cat-list');
+  catList.innerHTML=cats.map((cat,i)=>`<button class="split-cat-btn${S.curWorldCat===i?' active':''}" data-idx="${i}">
+    <i class="ti ${cat.icon||'ti-map'}" style="font-size:13px"></i>
+    <span style="flex:1;text-align:left">${esc(cat.name)}</span>
+    <button class="split-cat-del" data-idx="${i}"><i class="ti ti-x"></i></button>
+  </button>`).join('');
+  catList.querySelectorAll('.split-cat-btn').forEach(btn=>btn.addEventListener('click',e=>{if(e.target.closest('.split-cat-del'))return;S.curWorldCat=+btn.dataset.idx;renderWorld(workId);}));
+  catList.querySelectorAll('.split-cat-del').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();if(!confirm('確定要刪除此分類嗎？'))return;d.world.cats.splice(+btn.dataset.idx,1);if(S.curWorldCat>=d.world.cats.length)S.curWorldCat=null;save();renderWorld(workId);renderWorkDocs(workId);}));
+  const content=gel('world-content');
+  if(S.curWorldCat===null||!cats[S.curWorldCat]){content.innerHTML='<div class="empty-state"><i class="ti ti-map" style="font-size:26px"></i><span>選擇或建立一個分類</span></div>';return;}
+  renderWorldEntries(workId,S.curWorldCat);
+}
+
+function renderWorldEntries(workId,catIdx){
+  const cat=getDocs(workId).world.cats[catIdx],entries=cat.entries||[];
+  const content=gel('world-content');
+  content.innerHTML=`
+    <div class="split-content-hdr">
+      <i class="ti ${cat.icon||'ti-map'}" style="font-size:17px;color:var(--accent)"></i>
+      <input class="split-content-title" id="world-cat-name-inp" value="${esc(cat.name)}" placeholder="分類名稱">
+    </div>
+    <div style="border-bottom:1px solid var(--rule)">
+      <div class="wy-wrap" style="min-height:0">
+        <div class="wy-toolbar" id="world-overview-tb" style="border-bottom:none;padding:4px 8px"></div>
+        <div class="wy-editor" id="world-overview-ed" contenteditable="true"
+          data-placeholder="分類總覽、背景介紹、整體說明…（選填）"
+          style="min-height:60px;padding:10px 14px;font-size:13px;line-height:1.8;border-bottom:1px solid var(--rule)"></div>
+      </div>
+    </div>
+    <div class="world-entries" id="world-entries-list">
+      ${entries.map((e,i)=>`<div class="world-entry" data-idx="${i}">
+        <div class="world-entry-head">
+          <i class="ti ti-chevron-right" style="font-size:12px;color:var(--ink-faint);transition:transform .18s;flex-shrink:0"></i>
+          <input class="world-entry-title-inp" value="${esc(e.title||'')}" placeholder="條目標題…" data-idx="${i}">
+          <button class="world-entry-del" data-idx="${i}"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="world-entry-body">
+          <div class="wy-wrap" style="border-top:1px solid var(--rule)">
+            <div class="wy-toolbar" id="world-tb-${i}"></div>
+            <div class="wy-editor" id="world-ed-${i}" contenteditable="true"
+              data-placeholder="在這裡記錄細節…"
+              style="min-height:100px;padding:12px 14px;line-height:1.8"></div>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <button class="world-add-entry" id="btn-world-add-entry"><i class="ti ti-plus"></i> 新增條目</button>`;
+
+  gel('world-cat-name-inp').addEventListener('input',function(){cat.name=this.value;save();});
+  initWorldOverviewEditor(cat);
+
+  content.querySelectorAll('.world-entry-head').forEach(head=>head.addEventListener('click',e=>{
+    if(e.target.closest('.world-entry-del')||e.target.closest('.world-entry-title-inp'))return;
+    const body=head.nextElementSibling,chev=head.querySelector('i'),open=body.style.display!=='none';
+    body.style.display=open?'none':'block';
+    chev.style.transform=open?'':'rotate(90deg)';
+    // init WYSIWYG when first opened
+    if(body.style.display!=='none'){
+      const idx=+head.closest('.world-entry').dataset.idx;
+      const tbId=`world-tb-${idx}`,edId=`world-ed-${idx}`;
+      if(!gel(tbId).dataset.built){
+        wySetHTML(edId,entries[idx].body||'');
+        buildToolbar(tbId,edId,null);
+        gel(tbId).dataset.built='1';
+        gel(edId).addEventListener('input',()=>{entries[idx].body=wyGetHTML(edId);save();});
+      }
+    }
+  }));
+
+  content.querySelectorAll('.world-entry-title-inp').forEach(inp=>inp.addEventListener('input',()=>{entries[+inp.dataset.idx].title=inp.value;save();}));
+  content.querySelectorAll('.world-entry-del').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();entries.splice(+btn.dataset.idx,1);save();renderWorldEntries(workId,catIdx);
+  }));
+  gel('btn-world-add-entry').addEventListener('click',()=>{
+    if(!cat.entries)cat.entries=[];
+    cat.entries.push({title:'',body:''});
+    save();renderWorldEntries(workId,catIdx);
+    // auto-open the new entry
+    setTimeout(()=>{
+      const items=content.querySelectorAll('.world-entry');
+      const last=items[items.length-1];
+      if(last){
+        const head=last.querySelector('.world-entry-head');
+        const body=last.querySelector('.world-entry-body');
+        const chev=head?.querySelector('i');
+        if(body)body.style.display='block';
+        if(chev)chev.style.transform='rotate(90deg)';
+        const idx=+last.dataset.idx;
+        const tbId=`world-tb-${idx}`,edId=`world-ed-${idx}`;
+        if(gel(tbId)&&!gel(tbId).dataset.built){
+          wySetHTML(edId,'');buildToolbar(tbId,edId,null);
+          gel(tbId).dataset.built='1';
+          gel(edId).addEventListener('input',()=>{entries[idx].body=wyGetHTML(edId);save();});
+        }
+        gel(`world-ed-${idx}`)?.focus();
+      }
+    },30);
+  });
+}
+
+function openNewWorldCatModal(workId){
+  S.selWorldIcon='ti-map';gel('new-world-cat-name').value='';
+  gel('world-icon-picker').innerHTML=WORLD_ICONS.map(ic=>`<button class="icon-btn${ic==='ti-map'?' selected':''}" data-icon="${ic}"><i class="ti ${ic}"></i></button>`).join('');
+  gel('world-icon-picker').querySelectorAll('.icon-btn').forEach(btn=>btn.addEventListener('click',()=>{gel('world-icon-picker').querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');S.selWorldIcon=btn.dataset.icon;}));
+  gel('btn-confirm-new-world-cat').onclick=()=>{
+    if(!requireField('new-world-cat-name','分類名稱為必填'))return;
+    const name=gel('new-world-cat-name').value.trim();if(!name)return;
+    getDocs(workId).world.cats.push({name,icon:S.selWorldIcon,entries:[]});
+    S.curWorldCat=getDocs(workId).world.cats.length-1;
+    closeModal('new-world-cat');save();renderWorld(workId);renderWorkDocs(workId);
+  };
+  openModal('new-world-cat');
+}
+gel('btn-cancel-new-world-cat').addEventListener('click',()=>closeModal('new-world-cat'));
+
+// ── CHAPTERS (full-page editor) ───────────
+function openChaptersSection(workId){
+  S.curWorkId=workId;S.curChapter=null;S.chSort='asc';S.chSearch='';S.curVolIdx=null;
+  const w=curWork(),d=getDocs(workId);
+  gel('chapters-panel-title').textContent=w.name+'　章節';
+  // show/hide volume button
+  const volBtn=gel('btn-ch-add-vol');
+  if(volBtn)volBtn.style.display=w.hasVolumes?'flex':'none';
+  renderChapterList(workId);
+  showPanel('chapters');
+  // wire up buttons
+  const addCh=()=>addChapter(workId);
+  gel('btn-ch-add-top').onclick=addCh;gel('btn-ch-add').onclick=addCh;
+  gel('btn-ch-txt').onclick=()=>exportChapters(workId,false);
+  gel('btn-ch-md').onclick=()=>exportChapters(workId,true);
+  if(volBtn)volBtn.onclick=()=>openModal('add-volume');
+  gel('btn-confirm-add-vol').onclick=()=>{
+    const name=gel('new-vol-name').value.trim();if(!name)return;
+    getDocs(workId).volumes.push({name,id:'vol'+Date.now()});
+    closeModal('add-volume');save();renderChapterList(workId);toast('冊/篇已新增');
+  };
+  gel('ch-search').oninput=function(){S.chSearch=this.value.toLowerCase();renderChapterList(workId);};
+  gel('ch-sort-asc').onclick=()=>{S.chSort='asc';renderChapterList(workId);};
+  gel('ch-sort-desc').onclick=()=>{S.chSort='desc';renderChapterList(workId);};
+  gel('ch-sort-alpha').onclick=()=>{S.chSort='alpha';renderChapterList(workId);};
+  document.querySelectorAll('.w-sub').forEach(b=>b.classList.remove('active'));
+  gel('subnav-'+workId)?.querySelector('[data-sec="chapters"]')?.classList.add('active');
+  gel('breadcrumb').innerHTML=`<i class="ti ti-book-2" style="font-size:14px"></i><strong>${esc(w.name)} / 章節</strong>`;
+}
+
+function renderChapterList(workId){
+  const d=getDocs(workId),w=curWork();
+  const allChs=d.chapters;
+  const q=S.chSearch;
+  // sort
+  let display=[...allChs.map((ch,i)=>({ch,i}))];
+  if(q)display=display.filter(({ch})=>(ch.title||'').toLowerCase().includes(q)||(ch.body||'').toLowerCase().includes(q));
+  if(S.chSort==='desc')display.reverse();
+  if(S.chSort==='alpha')display.sort((a,b)=>(a.ch.title||'').localeCompare(b.ch.title||'','zh-TW'));
+  // update sort button styles
+  ['ch-sort-asc','ch-sort-desc','ch-sort-alpha'].forEach(id=>{const el=gel(id);if(el){el.classList.remove('active');}});
+  const sortMap={asc:'ch-sort-asc',desc:'ch-sort-desc',alpha:'ch-sort-alpha'};
+  gel(sortMap[S.chSort])?.classList.add('active');
+
+  const list=gel('ch-list');
+  if(w?.hasVolumes&&d.volumes.length){
+    // group by volume
+    let html='';
+    const unassigned=display.filter(({ch})=>!ch.volId);
+    d.volumes.forEach(vol=>{
+      const volChs=display.filter(({ch})=>ch.volId===vol.id);
+      html+=`<div class="ch-vol-header" data-volid="${esc(vol.id)}">${esc(vol.name)}<button class="ch-vol-del" data-volid="${esc(vol.id)}"><i class="ti ti-x"></i></button></div>`;
+      volChs.forEach(({ch,i})=>{html+=chBtnHtml(ch,i);});
+      html+=`<button class="s-add" style="padding:4px 13px 4px 20px;font-size:11px" data-add-to-vol="${esc(vol.id)}"><i class="ti ti-plus" style="font-size:11px"></i> 在此冊新增章節</button>`;
+    });
+    if(unassigned.length){html+=`<div class="ch-vol-header">未分冊</div>`;unassigned.forEach(({ch,i})=>{html+=chBtnHtml(ch,i);});}
+    list.innerHTML=html||'<div style="font-size:12px;color:var(--ink-faint);padding:10px 13px">還沒有章節</div>';
+    list.querySelectorAll('.ch-vol-del').forEach(btn=>btn.addEventListener('click',e=>{
+      e.stopPropagation();if(!confirm('確定要刪除此冊/篇？（章節不會刪除）'))return;
+      d.volumes=d.volumes.filter(v=>v.id!==btn.dataset.volid);save();renderChapterList(workId);
+    }));
+    list.querySelectorAll('[data-add-to-vol]').forEach(btn=>btn.addEventListener('click',()=>{addChapter(workId,btn.dataset.addToVol);}));
+  }else{
+    list.innerHTML=display.map(({ch,i})=>chBtnHtml(ch,i)).join('')||'<div style="font-size:12px;color:var(--ink-faint);padding:10px 13px">'+(q?'找不到符合的章節':'還沒有章節')+'</div>';
+  }
+  list.querySelectorAll('.ch-btn').forEach(btn=>btn.addEventListener('click',e=>{
+    if(e.target.closest('.ch-del'))return;
+    S.curChapter=+btn.dataset.idx;renderChapterList(workId);renderChapterEditor(workId,S.curChapter);
+  }));
+  list.querySelectorAll('.ch-del').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();if(!confirm('確定要刪除這個章節嗎？'))return;
+    allChs.splice(+btn.dataset.idx,1);
+    if(S.curChapter!==null&&S.curChapter>=allChs.length)S.curChapter=null;
+    save();renderChapterList(workId);renderWorkDocs(workId);
+    if(S.curChapter!==null&&allChs[S.curChapter])renderChapterEditor(workId,S.curChapter);
+    else gel('ch-editor').innerHTML='<div class="ch-empty"><i class="ti ti-book-2" style="font-size:28px"></i><span>選擇或新增章節</span></div>';
+    toast('章節已刪除');
+  }));
+  if(S.curChapter!==null&&allChs[S.curChapter])renderChapterEditor(workId,S.curChapter);
+}
+
+function chBtnHtml(ch,i){
+  const label=ch.title?`第 ${i+1} 章　${ch.title}`:`第 ${i+1} 章`;
+  return`<button class="ch-btn${S.curChapter===i?' active':''}" data-idx="${i}">
+    <span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${esc(label)}</span>
+    <button class="ch-del" data-idx="${i}"><i class="ti ti-x"></i></button>
+  </button>`;
+}
+
+function renderChapterEditor(workId,idx){
+  const ch=getDocs(workId).chapters[idx];
+  const ed=gel('ch-editor');
+  ed.innerHTML=`
+    <div class="wy-wrap" style="height:100%">
+      <div class="wy-toolbar" id="ch-toolbar"></div>
+      <input id="ch-title-inp" value="${esc(ch.title||'')}" placeholder="章節標題…"
+        style="padding:12px 22px 8px;font-family:'Noto Serif TC',serif;font-size:16px;font-weight:600;color:var(--ink);background:none;border:none;border-bottom:1px solid var(--rule);outline:none;width:100%;flex-shrink:0">
+      <div class="wy-editor" id="ch-body-ed" contenteditable="true" data-placeholder="開始書寫這一章的內容..."></div>
+      <div class="wy-footer">
+        <span class="wy-wc" id="ch-wc">0 字</span>
+      </div>
+    </div>`;
+  wySetHTML('ch-body-ed', ch.body||'');
+  gel('ch-wc').textContent=(gel('ch-body-ed')?.innerText||'').replace(/\s/g,'').length+' 字';
+  buildToolbar('ch-toolbar','ch-body-ed','ch-wc');
+  gel('ch-title-inp').addEventListener('input',function(){ch.title=this.value;save();renderChapterList(workId);});
+  gel('ch-body-ed').addEventListener('input',function(){ch.body=wyGetHTML('ch-body-ed');save();});
+}
+
+function addChapter(workId,volId){
+  const d=getDocs(workId);
+  d.chapters.push({title:'',body:'',volId:volId||null});
+  S.curChapter=d.chapters.length-1;
+  save();renderChapterList(workId);
+}
+
+function exportChapters(workId,md){
+  const w=S.works.find(x=>x.id===workId),chs=getDocs(workId).chapters;
+  let t=(md?'# ':'')+( w?.name||'')+'\n\n';
+  chs.forEach((ch,i)=>{
+    t+=(md?`## 第${i+1}章　`:`第${i+1}章　`)+(ch.title||'（未命名）')+'\n\n';
+    // ch.body is HTML, convert appropriately
+    const bodyText=md?htmlToMd(ch.body||''):stripHtml(ch.body||'');
+    if(bodyText)t+=bodyText+'\n\n';
+    t+=md?'---\n\n':'════════════════\n\n';
+  });
+  dl(md?'章節.md':'章節.txt',t);toast(md?'已匯出 MD':'已匯出 TXT');
+}
+function stripHtml(html){
+  const d=document.createElement('div');d.innerHTML=html;return d.innerText||'';
+}
+gel('btn-cancel-add-vol')?.addEventListener('click',()=>closeModal('add-volume'));
+
+// ── SPARKS ────────────────────────────────
+function sparkBg(color,customBg){
+  if(color==='custom')return customBg||'#f3e8ff';
+  const map={yellow:'var(--note-yellow)',rose:'var(--note-rose)',sage:'var(--note-sage)',sky:'var(--note-sky)'};
+  return map[color]||'var(--note-yellow)';
+}
+function renderSparks(){
+  const grid=gel('sparks-grid');
+  const sm=selectMode.sparks;
+  grid.innerHTML=S.sparks.map((s,i)=>`<div class="spark-card selectable${BATCH.sparks.has(i)?' selected':''}" data-idx="${i}" style="background:${sparkBg(s.color,s.customBg)};cursor:pointer">
+    <div class="sel-check"></div>
+    ${!sm?`<button class="spark-del" data-idx="${i}"><i class="ti ti-x"></i></button>`:''}
+    ${s.title?`<div style="font-size:13px;font-weight:500;margin-bottom:5px">${esc(s.title)}</div>`:''}
+    <div>${esc(s.content)}</div>
+    <div class="spark-meta"><i class="ti ti-calendar" style="font-size:10px"></i>${s.date}</div>
+  </div>`).join('')+'<button class="add-spark-card" id="btn-add-spark-card"><i class="ti ti-plus"></i>記下靈感</button>';
+  if(sm)grid.classList.add('select-mode'); else grid.classList.remove('select-mode');
+  grid.querySelectorAll('.spark-del').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();S.sparks.splice(+btn.dataset.idx,1);save();renderSparks();renderHomeSparks();toast('靈感已刪除');
+  }));
+  grid.querySelectorAll('.spark-card[data-idx]').forEach(card=>card.addEventListener('click',e=>{
+    if(e.target.closest('.spark-del'))return;
+    if(sm){
+      const i=+card.dataset.idx;
+      if(BATCH.sparks.has(i))BATCH.sparks.delete(i);else BATCH.sparks.add(i);
+      card.classList.toggle('selected',BATCH.sparks.has(i));
+      updateBatchBar('sparks','sparks-batch-bar');return;
+    }
+    const s=S.sparks[+card.dataset.idx];
+    openLightbox(s.title||'靈感',s.content,null,s.date);
+  }));
+  gel('btn-add-spark-card').addEventListener('click',openNewSparkModal);
+}
+
+function renderHomeSparks(){
+  const el=gel('home-sparks'),preview=S.sparks.slice(0,3);
+  if(!preview.length){el.innerHTML='<div style="font-size:13px;color:var(--ink-faint)">還沒有靈感記錄。</div>';return;}
+  el.innerHTML=preview.map(s=>`<div class="spark-card" style="background:${sparkBg(s.color,s.customBg)};cursor:pointer">
+    ${s.title?`<div style="font-size:13px;font-weight:500;margin-bottom:3px">${esc(s.title)}</div>`:''}
+    <div style="font-size:12px">${esc(s.content.slice(0,60))}${s.content.length>60?'…':''}</div>
+  </div>`).join('');
+  el.querySelectorAll('.spark-card').forEach(c=>c.addEventListener('click',()=>showPanel('sparks')));
+}
+
+function openNewSparkModal(){
+  gel('new-spark-title').value='';gel('new-spark-content').value='';S.selSparkColor='yellow';S._sparkCustomBg=null;
+  resetColorDots('new-spark','yellow');openModal('new-spark');
+}
+gel('btn-confirm-new-spark').addEventListener('click',()=>{
+  if(!requireField('new-spark-content','請輸入靈感內容'))return;
+  const content=gel('new-spark-content').value.trim();if(!content)return;
+  S.sparks.unshift({title:gel('new-spark-title').value.trim(),content,color:S.selSparkColor,customBg:S.selSparkColor==='custom'?S._sparkCustomBg:null,date:today()});
+  closeModal('new-spark');save();renderSparks();renderHomeSparks();toast('靈感已記下');
+});
+gel('btn-cancel-new-spark').addEventListener('click',()=>closeModal('new-spark'));
+
+// ── MOODBOARD ─────────────────────────────
+function getMoodFolders(){const fs=new Set();S.moodItems.forEach(m=>{if(m.folder)fs.add(m.folder);});return[...fs];}
+
+function renderMoodFolderBar(){
+  const bar=gel('mood-folder-bar'),folders=getMoodFolders();
+  bar.innerHTML=(folders.length?`<button class="folder-tag${!S.moodFolder?' active':''}" data-folder="">全部</button>`+folders.map(f=>`<button class="folder-tag${S.moodFolder===f?' active':''}" data-folder="${esc(f)}">${esc(f)}</button>`).join(''):'');
+  bar.querySelectorAll('.folder-tag').forEach(btn=>btn.addEventListener('click',()=>{S.moodFolder=btn.dataset.folder||null;renderMoodboard();}));
+}
+
+function renderMoodboard(){
+  renderMoodFolderBar();
+  const filtered=S.moodFolder?S.moodItems.filter(m=>m.folder===S.moodFolder):S.moodItems;
+  const grid=gel('mood-grid');
+  if(!filtered.length){grid.innerHTML='<div style="font-size:13px;color:var(--ink-faint);grid-column:1/-1;padding:18px 0">還沒有資料。點擊「新增資料」上傳圖片。</div>';return;}
+  grid.innerHTML=filtered.map(m=>{
+    const ri=S.moodItems.indexOf(m);
+    const imgHtml=m.imgData?`<img class="mood-img" src="${m.imgData}" alt="" loading="lazy">`:m.imgUrl?`<img class="mood-img" src="${esc(m.imgUrl)}" alt="" loading="lazy">`:`<div class="mood-img-ph"><i class="ti ti-photo"></i></div>`;
+    return`<div class="mood-card selectable${BATCH.mood.has(ri)?' selected':''}" data-ri="${ri}" style="cursor:pointer"><div class="sel-check"></div><button class="mood-del" data-ri="${ri}"><i class="ti ti-x"></i></button>
+      ${imgHtml}<div class="mood-body">
+      ${m.folder?`<div class="mood-folder-badge">${esc(m.folder)}</div>`:''}
+      ${m.title?`<div class="mood-title">${esc(m.title)}</div>`:''}
+      ${m.note?`<div class="mood-note">${esc(m.note)}</div>`:''}
+      </div></div>`;
+  }).join('');
+  const msm=selectMode.mood;
+  if(msm)grid.classList.add('select-mode'); else grid.classList.remove('select-mode');
+  grid.querySelectorAll('.mood-del').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();S.moodItems.splice(+btn.dataset.ri,1);save();renderMoodboard();toast('已刪除');}));
+  grid.querySelectorAll('.mood-card').forEach(card=>card.addEventListener('click',e=>{
+    if(e.target.closest('.mood-del'))return;
+    if(msm){
+      const ri=+card.dataset.ri;
+      if(BATCH.mood.has(ri))BATCH.mood.delete(ri);else BATCH.mood.add(ri);
+      card.classList.toggle('selected',BATCH.mood.has(ri));
+      updateBatchBar('mood','mood-batch-bar');return;
+    }
+    const m=S.moodItems[+card.dataset.ri];
+    const img=m.imgData||m.imgUrl||null;
+    openLightbox(m.title||'資料',m.note||'',img,m.folder||'');
+  }));
+}
+
+function renderMoodFolderPicker(){
+  const folders=getMoodFolders();S._modalMoodFolder=null;
+  const picker=gel('mood-folder-picker');
+  picker.innerHTML=folders.map(f=>`<button class="folder-tag" data-folder="${esc(f)}">${esc(f)}</button>`).join('');
+  picker.querySelectorAll('.folder-tag').forEach(btn=>btn.addEventListener('click',()=>{
+    picker.querySelectorAll('.folder-tag').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');S._modalMoodFolder=btn.dataset.folder;
+  }));
+}
+
+let _moodFileB64=null;
+gel('mood-file-input').addEventListener('change',function(){
+  if(!this.files[0])return;
+  const r=new FileReader();
+  r.onload=ev=>{_moodFileB64=ev.target.result;gel('mood-preview-img').src=_moodFileB64;gel('mood-img-preview').style.display='block';gel('mood-drop-area').style.borderColor='var(--accent)';};
+  r.readAsDataURL(this.files[0]);
+});
+gel('new-mood-url').addEventListener('input',function(){
+  if(this.value.trim()){gel('mood-preview-img').src=this.value.trim();gel('mood-img-preview').style.display='block';_moodFileB64=null;}
+  else gel('mood-img-preview').style.display='none';
+});
+gel('btn-add-mood-folder').addEventListener('click',()=>{
+  const val=gel('new-mood-folder-input').value.trim();if(!val)return;
+  S._modalMoodFolder=val;gel('new-mood-folder-input').value='';renderMoodFolderPicker();
+  setTimeout(()=>{const btn=[...gel('mood-folder-picker').querySelectorAll('.folder-tag')].find(b=>b.dataset.folder===val);if(btn){gel('mood-folder-picker').querySelectorAll('.folder-tag').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}},10);
+});
+gel('btn-add-mooditem').addEventListener('click',()=>{
+  _moodFileB64=null;gel('new-mood-title').value='';gel('new-mood-note').value='';gel('new-mood-url').value='';
+  gel('mood-img-preview').style.display='none';gel('mood-drop-area').style.borderColor='';gel('mood-file-input').value='';
+  renderMoodFolderPicker();openModal('new-mooditem');
+});
+gel('btn-cancel-new-mooditem').addEventListener('click',()=>closeModal('new-mooditem'));
+gel('btn-confirm-new-mooditem').addEventListener('click',()=>{
+  S.moodItems.unshift({title:gel('new-mood-title').value.trim(),note:gel('new-mood-note').value.trim(),folder:S._modalMoodFolder||null,imgData:_moodFileB64||null,imgUrl:_moodFileB64?null:(gel('new-mood-url').value.trim()||null)});
+  closeModal('new-mooditem');save();renderMoodboard();toast('資料已新增');
+});
+
+// ── GLOBAL LINKS ──────────────────────────
+function renderGlobalLinks(){
+  const el=gel('global-links-list');
+  if(!S.globalLinks.length){el.innerHTML='<div style="font-size:11px;color:var(--ink-faint);padding:2px 16px 5px">還沒有連結</div>';return;}
+  el.innerHTML=S.globalLinks.map((lk,i)=>
+    `<div class="glink-row" data-idx="${i}">
+      <i class="ti ti-link" style="font-size:12px;color:var(--ink-faint);flex-shrink:0"></i>
+      <span class="glink-name" data-url="${esc(lk.url)}" style="cursor:pointer;flex:1" title="${esc(lk.url)}">${esc(lk.name)}${lk.note?`<span style="font-size:10px;color:var(--ink-faint);margin-left:4px">${esc(lk.note)}</span>`:''}</span>
+      <button class="glink-open" data-idx="${i}" title="編輯"><i class="ti ti-pencil"></i></button>
+      <button class="glink-del" data-idx="${i}" title="刪除"><i class="ti ti-x"></i></button>
+    </div>`).join('');
+  el.querySelectorAll('.glink-name').forEach(span=>span.addEventListener('click',()=>window.open(span.dataset.url,'_blank')));
+  el.querySelectorAll('.glink-open').forEach(btn=>btn.addEventListener('click',()=>{
+    const lk=S.globalLinks[+btn.dataset.idx];
+    gel('new-link-name').value=lk.name; gel('new-link-url').value=lk.url; gel('new-link-note').value=lk.note||'';
+    const editIdx=+btn.dataset.idx;
+    gel('btn-confirm-new-link').onclick=()=>{
+      const name=gel('new-link-name').value.trim(),url=gel('new-link-url').value.trim();
+      if(!name||!url)return;
+      S.globalLinks[editIdx]={name,url,note:gel('new-link-note').value.trim()};
+      closeModal('new-link');save();renderGlobalLinks();toast('連結已更新');
+    };
+    openModal('new-link');
+  }));
+  el.querySelectorAll('.glink-del').forEach(btn=>btn.addEventListener('click',()=>{S.globalLinks.splice(+btn.dataset.idx,1);save();renderGlobalLinks();}));
+}
+
+// ── EXPORT ────────────────────────────────
+function exportOutline(id,md){
+  const w=S.works.find(x=>x.id===id),chs=getDocs(id).outline;
+  let t=(md?'# ':'')+( w?.name||'')+'　故事大綱\n\n';
+  chs.forEach((ch,i)=>t+=(md?`## 第${i+1}章　`:`第${i+1}章　`)+(ch.title||'（未命名）')+'\n'+(ch.summary?(md?'> ':'')+ch.summary+'\n':'')+'\n');
+  dl(md?'大綱.md':'大綱.txt',t);toast(md?'已匯出 MD':'已匯出 TXT');
+}
+function exportWorld(id,md){
+  const w=S.works.find(x=>x.id===id);
+  let t=(md?'# ':'')+( w?.name||'')+'　世界觀設定\n\n';
+  (getDocs(id).world?.cats||[]).forEach(cat=>{
+    t+=(md?'## ':'\n═══ ')+cat.name+(md?'\n':' ═══\n')+'\n';
+    (cat.entries||[]).forEach(e=>{t+=(md?'### ':'\n── ')+(e.title||'（條目）')+(md?'\n':' ──\n')+(e.body?e.body+'\n':'')+'\n';});
+  });
+  dl(md?'世界觀.md':'世界觀.txt',t);toast(md?'已匯出 MD':'已匯出 TXT');
+}
+function exportJSON(){
+  dl('unwritten_backup_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({works:S.works,sparks:S.sparks,docs:S.docs,moodItems:S.moodItems,globalLinks:S.globalLinks},null,2),'application/json');
+  toast('已匯出完整備份');
+}
+function importJSON(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{const d=JSON.parse(ev.target.result);if(!d.works)throw 0;
+      if(!confirm('匯入會覆蓋目前所有資料，確定嗎？'))return;
+      Object.assign(S,{works:d.works||[],sparks:d.sparks||[],docs:d.docs||{},moodItems:d.moodItems||[],globalLinks:d.globalLinks||[]});
+      save();renderAll();showPanel('home');toast('匯入成功');
+    }catch{toast('匯入失敗：格式不正確');}
+  };
+  r.readAsText(file);e.target.value='';
+}
+function exportDOCX(f){
+  toast('Word 生成中...');
+  const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/docx@9.0.3/build/index.min.js';
+  s.onload=()=>{
+    try{const{Document,Packer,Paragraph,TextRun,HeadingLevel}=window.docx;
+      const children=[];
+      if(f.title)children.push(new Paragraph({heading:HeadingLevel.HEADING_1,children:[new TextRun({text:f.title,bold:true})]}));
+      (f.body||'').split('\n').forEach(line=>children.push(new Paragraph({children:[new TextRun({text:line,font:'標楷體',size:28})]})));
+      const doc=new Document({sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:1440,right:1440,bottom:1440,left:1440}}},children}]});
+      Packer.toBlob(doc).then(blob=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(f.title||'文件')+'.docx';a.click();URL.revokeObjectURL(a.href);toast('Word 已匯出');});
+    }catch(e){toast('Word 匯出失敗：'+e.message);}
+  };
+  s.onerror=()=>toast('載入 docx 套件失敗');document.head.appendChild(s);
+}
+
+// ── WYSIWYG EDITOR ────────────────────────
+const LINE_HEIGHTS=[{v:'1.5',l:'緊密'},{v:'1.8',l:'標準'},{v:'2',l:'寬鬆'},{v:'2.5',l:'超寬'}];
+
+function buildToolbar(tbId, edId, wcId){
+  const tb=gel(tbId); if(!tb)return;
+  const ed=gel(edId); if(!ed)return;
+  const exec=(cmd,val=null)=>{ ed.focus(); document.execCommand(cmd,false,val); updateToolbarState(tbId,edId); };
+
+  tb.innerHTML=`
+    <div class="wy-toolbar-group">
+      <select class="wy-select" title="段落格式" id="${tbId}-format">
+        <option value="p">內文</option>
+        <option value="h1">H1 標題</option>
+        <option value="h2">H2 標題</option>
+        <option value="h3">H3 標題</option>
+      </select>
+    </div>
+    <div class="wy-toolbar-sep"></div>
+    <div class="wy-toolbar-group">
+      <button class="wy-btn" data-cmd="bold" title="粗體 (Ctrl+B)"><i class="ti ti-bold"></i></button>
+      <button class="wy-btn" data-cmd="italic" title="斜體 (Ctrl+I)"><i class="ti ti-italic"></i></button>
+      <button class="wy-btn" data-cmd="underline" title="底線 (Ctrl+U)"><i class="ti ti-underline"></i></button>
+      <button class="wy-btn" data-cmd="strikeThrough" title="刪除線"><i class="ti ti-strikethrough"></i></button>
+    </div>
+    <div class="wy-toolbar-sep"></div>
+    <div class="wy-toolbar-group">
+      <button class="wy-btn" data-cmd="justifyLeft" title="靠左"><i class="ti ti-align-left"></i></button>
+      <button class="wy-btn" data-cmd="justifyCenter" title="置中"><i class="ti ti-align-center"></i></button>
+      <button class="wy-btn" data-cmd="justifyRight" title="靠右"><i class="ti ti-align-right"></i></button>
+    </div>
+    <div class="wy-toolbar-sep"></div>
+    <div class="wy-toolbar-group">
+      <button class="wy-btn" data-cmd="insertUnorderedList" title="點式清單"><i class="ti ti-list"></i></button>
+      <button class="wy-btn" data-cmd="insertOrderedList" title="號碼清單"><i class="ti ti-list-numbers"></i></button>
+    </div>
+    <div class="wy-toolbar-sep"></div>
+    <div class="wy-toolbar-group">
+      <select class="wy-select" title="行距" id="${tbId}-lh">
+        ${LINE_HEIGHTS.map(l=>`<option value="${l.v}">${l.l}</option>`).join('')}
+      </select>
+    </div>
+    <div class="wy-toolbar-sep"></div>
+    <div class="wy-toolbar-group">
+      <button class="wy-btn" data-action="hr" title="分隔線"><i class="ti ti-minus"></i></button>
+    </div>`;
+
+  // cmd buttons
+  tb.querySelectorAll('[data-cmd]').forEach(btn=>btn.addEventListener('mousedown',e=>{
+    e.preventDefault(); exec(btn.dataset.cmd);
+  }));
+
+  // format select
+  const fmtSel=gel(`${tbId}-format`);
+  fmtSel?.addEventListener('change',function(){
+    exec('formatBlock','<'+this.value+'>');
+  });
+
+  // line height select — set directly on editor element
+  const lhSel=gel(`${tbId}-lh`);
+  lhSel?.addEventListener('change',function(){
+    const edEl=gel(edId);
+    if(edEl)edEl.style.lineHeight=this.value;
+  });
+  if(lhSel)lhSel.value='2';
+  // apply default
+  setTimeout(()=>{ const edEl=gel(edId);if(edEl)edEl.style.lineHeight='2'; },0);
+
+  // hr button
+  tb.querySelector('[data-action="hr"]')?.addEventListener('mousedown',e=>{
+    e.preventDefault();ed.focus();
+    document.execCommand('insertHorizontalRule',false,null);
+  });
+
+  // update state on selection change
+  ed.addEventListener('keyup',()=>updateToolbarState(tbId,edId));
+  ed.addEventListener('mouseup',()=>updateToolbarState(tbId,edId));
+
+  // word count
+  ed.addEventListener('input',()=>{
+    const wc=gel(wcId);
+    if(wc)wc.textContent=(ed.innerText||'').replace(/\s/g,'').length+' 字';
+  });
+}
+
+function updateToolbarState(tbId,edId){
+  const tb=gel(tbId);if(!tb)return;
+  const cmds=['bold','italic','underline','strikeThrough','justifyLeft','justifyCenter','justifyRight','insertUnorderedList','insertOrderedList'];
+  cmds.forEach(cmd=>{
+    const btn=tb.querySelector(`[data-cmd="${cmd}"]`);
+    if(btn)btn.classList.toggle('active',document.queryCommandState(cmd));
+  });
+}
+
+function wyGetHTML(edId){ return gel(edId)?.innerHTML||''; }
+function wySetHTML(edId,html){ const el=gel(edId);if(el)el.innerHTML=html||''; }
+function wyGetText(edId){ return gel(edId)?.innerText||''; }
+
+// HTML ↔ storage (store as HTML, export as text/md)
+function htmlToMd(html){
+  return html
+    .replace(/<h1[^>]*>(.*?)<\/h1>/gi,'# $1\n')
+    .replace(/<h2[^>]*>(.*?)<\/h2>/gi,'## $1\n')
+    .replace(/<h3[^>]*>(.*?)<\/h3>/gi,'### $1\n')
+    .replace(/<strong[^>]*>(.*?)<\/strong>/gi,'**$1**')
+    .replace(/<b[^>]*>(.*?)<\/b>/gi,'**$1**')
+    .replace(/<em[^>]*>(.*?)<\/em>/gi,'*$1*')
+    .replace(/<i[^>]*>(.*?)<\/i>/gi,'*$1*')
+    .replace(/<u[^>]*>(.*?)<\/u>/gi,'_$1_')
+    .replace(/<s[^>]*>(.*?)<\/s>/gi,'~~$1~~')
+    .replace(/<strike[^>]*>(.*?)<\/strike>/gi,'~~$1~~')
+    .replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gis,'> $1\n')
+    .replace(/<li[^>]*>(.*?)<\/li>/gi,'- $1\n')
+    .replace(/<ul[^>]*>|<\/ul>|<ol[^>]*>|<\/ol>/gi,'')
+    .replace(/<hr[^>]*>/gi,'\n---\n')
+    .replace(/<br\s*\/?>/gi,'\n')
+    .replace(/<p[^>]*>(.*?)<\/p>/gis,'$1\n')
+    .replace(/<div[^>]*>(.*?)<\/div>/gis,'$1\n')
+    .replace(/<[^>]+>/g,'')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ')
+    .trim();
+}
+
+// ── IMPORT CONTENT ────────────────────────
+let _importParsedText = null;
+let _importFileName = '';
+
+function openImportModal() {
+  // populate work selector
+  const sel = gel('import-work-select');
+  sel.innerHTML = '<option value="">— 選擇作品 —</option>' +
+    S.works.map(w => `<option value="${esc(w.id)}">${esc(w.name)}</option>`).join('');
+  // reset state
+  const firstRadio = document.querySelector('#modal-import-content input[type=radio]');
+  if(firstRadio) firstRadio.checked = true;
+  gel('import-drop-label').textContent = '點擊選擇或拖曳檔案';
+  gel('import-drop-area').style.borderColor = '';
+  gel('import-file-content').value = '';
+  gel('import-preview-box').style.display = 'none';
+  gel('btn-confirm-import-content').disabled = true;
+  _importParsedText = null;
+  _importFileName = '';
+  openModal('import-content');
+}
+
+gel('import-file-content').addEventListener('change', async function() {
+  const file = this.files[0]; if (!file) return;
+  _importFileName = file.name.replace(/\.[^.]+$/, ''); // strip extension
+  gel('import-drop-label').textContent = file.name;
+  gel('import-drop-area').style.borderColor = 'var(--accent)';
+  gel('btn-confirm-import-content').disabled = true;
+  gel('import-preview-box').style.display = 'none';
+  _importParsedText = null;
+
+  const ext = file.name.split('.').pop().toLowerCase();
+  try {
+    if (ext === 'txt' || ext === 'md') {
+      _importParsedText = await file.text();
+    } else if (ext === 'docx' || ext === 'doc') {
+      _importParsedText = await readDocx(file);
+    } else {
+      toast('不支援的格式');return;
+    }
+    // show preview
+    const preview = gel('import-preview-box');
+    preview.textContent = _importParsedText.slice(0, 300) + (_importParsedText.length > 300 ? '…' : '');
+    preview.style.display = 'block';
+    gel('btn-confirm-import-content').disabled = false;
+  } catch(e) {
+    toast('讀取檔案失敗：' + e.message);
+  }
+});
+
+async function readDocx(file) {
+  // lazy-load mammoth for docx parsing
+  if (!window.mammoth) {
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js';
+      s.onload = res; s.onerror = () => rej(new Error('mammoth 套件載入失敗'));
+      document.head.appendChild(s);
+    });
+  }
+  const arrayBuffer = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer });
+  return result.value;
+}
+
+gel('btn-confirm-import-content').addEventListener('click', () => {
+  const workId = gel('import-work-select').value;
+  if (!workId) { toast('請選擇作品'); return; }
+  if (!_importParsedText) { toast('請選擇檔案'); return; }
+  const type = document.querySelector('input[name="import-type"]:checked')?.value || 'chapter';
+  const d = getDocs(workId);
+  S.curWorkId = workId;
+
+  if (type === 'chapter') {
+    d.chapters.push({ title: _importFileName, body: _importParsedText, volId: null });
+    closeModal('import-content');
+    save(); renderWorkDocs(workId);
+    openChaptersSection(workId);
+    toast(`已匯入章節「${_importFileName}」`);
+  } else if (type === 'chars') {
+    // import as a new character with backstory filled
+    d.chars.push({ name: _importFileName, role: '', age: '', gender: '', origin: '', side: '', appearance: '', personality: '', backstory: _importParsedText, photo: null });
+    closeModal('import-content');
+    save(); renderWorkDocs(workId);
+    openSection(workId, 'chars');
+    toast(`已匯入人物「${_importFileName}」`);
+  } else if (type === 'outline') {
+    // parse lines as outline entries: first line = title, rest = summary
+    const lines = _importParsedText.split('\n').filter(l => l.trim());
+    lines.forEach(line => d.outline.push({ title: line.slice(0, 60), summary: line.length > 60 ? line.slice(60) : '' }));
+    closeModal('import-content');
+    save(); renderWorkDocs(workId);
+    openSection(workId, 'outline');
+    toast(`已匯入大綱（${lines.length} 行）`);
+  } else if (type === 'world') {
+    // import as a new world cat with one entry
+    if (!d.world) d.world = { cats: [] };
+    d.world.cats.push({ name: _importFileName, icon: 'ti-file', entries: [{ title: _importFileName, body: _importParsedText }] });
+    closeModal('import-content');
+    save(); renderWorkDocs(workId);
+    openSection(workId, 'world');
+    toast(`已匯入世界觀分類「${_importFileName}」`);
+  } else {
+    // other — goes into files
+    d.files.push({ title: _importFileName, type: 'other', body: _importParsedText });
+    closeModal('import-content');
+    save(); renderWorkDocs(workId);
+    openWork(workId);
+    toast(`已匯入文件「${_importFileName}」`);
+  }
+});
+
+gel('btn-cancel-import-content').addEventListener('click', () => closeModal('import-content'));
+document.getElementById('modal-import-content').addEventListener('click', e => {
+  if (e.target === gel('modal-import-content')) closeModal('import-content');
+});
+
+// drag and drop on import area
+const importDropArea = gel('import-drop-area');
+['dragenter','dragover'].forEach(ev => importDropArea.addEventListener(ev, e => { e.preventDefault(); importDropArea.style.borderColor = 'var(--accent)'; }));
+['dragleave','drop'].forEach(ev => importDropArea.addEventListener(ev, e => { e.preventDefault(); importDropArea.style.borderColor = ''; }));
+importDropArea.addEventListener('drop', e => {
+  const file = e.dataTransfer.files[0]; if (!file) return;
+  const dt = new DataTransfer(); dt.items.add(file);
+  gel('import-file-content').files = dt.files;
+  gel('import-file-content').dispatchEvent(new Event('change'));
+});
+
+// ── MOBILE ────────────────────────────────
+const isMobile=()=>window.innerWidth<=768;
+
+function mobileNav(panel){
+  // update bottom nav active state
+  document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.remove('active'));
+  const map={home:'mnav-home',sparks:'mnav-sparks',settings:'mnav-settings'};
+  if(map[panel])gel(map[panel])?.classList.add('active');
+  showPanel(panel);
+}
+
+function openMobileDrawer(){
+  // sync mobile drawer links list
+  const mgl=gel('mobile-global-links');
+  if(mgl)mgl.innerHTML=gel('global-links-list')?.innerHTML||'';
+  const mwn=gel('mobile-works-nav');
+  if(mwn)mwn.innerHTML=gel('works-nav')?.innerHTML||'';
+  // re-bind clicks in mobile works nav
+  gel('mobile-works-nav')?.querySelectorAll('.work-hdr').forEach(h=>h.addEventListener('click',()=>{
+    toggleWorkNav(h.dataset.id);
+    // re-render since it's a copy
+    const mwn2=gel('mobile-works-nav');
+    const sub=mwn2?.querySelector('#subnav-'+h.dataset.id);
+    if(sub){const open=sub.style.display!=='none';sub.style.display=open?'none':'block';}
+  }));
+  gel('mobile-works-nav')?.querySelectorAll('.w-sub').forEach(btn=>btn.addEventListener('click',()=>{
+    closeMobileDrawer();
+    if(btn.dataset.sec==='overview')openWork(btn.dataset.id);
+    else openSection(btn.dataset.id,btn.dataset.sec);
+  }));
+  gel('mobile-drawer').classList.add('open');
+}
+
+function closeMobileDrawer(){
+  gel('mobile-drawer').classList.remove('open');
+}
+
+
+// ── LIGHTBOX ─────────────────────────────
+function openLightbox(title,body,imgSrc,meta){
+  gel('lightbox-title').textContent=title||'';
+  gel('lightbox-body').textContent=body||'';
+  gel('lightbox-meta').textContent=meta||'';
+  const imgWrap=gel('lightbox-img-wrap');
+  const img=gel('lightbox-img');
+  if(imgSrc){imgWrap.style.display='block';img.src=imgSrc;}
+  else{imgWrap.style.display='none';img.src='';}
+  openModal('lightbox');
+}
+
+// ── CUSTOM SPARK COLOR ────────────────────
+const sparkCustomInp=gel('spark-custom-color-inp');
+const sparkCustomDot=gel('spark-custom-dot');
+if(sparkCustomInp&&sparkCustomDot){
+  // clicking the dot opens the color picker (input is inside, invisible)
+  sparkCustomInp.addEventListener('input',function(){
+    sparkCustomDot.style.background=this.value;
+    S._sparkCustomBg=this.value;
+    S.selSparkColor='custom';
+    // highlight this dot
+    gel('modal-new-spark').querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
+    sparkCustomDot.classList.add('selected');
+  });
+  sparkCustomDot.addEventListener('click',()=>{
+    gel('modal-new-spark').querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
+    sparkCustomDot.classList.add('selected');
+    S.selSparkColor='custom';
+    S._sparkCustomBg=sparkCustomInp.value;
+  });
+}
+
+// ── VALIDATION ────────────────────────────
+function requireField(elId,msg){
+  const el=gel(elId);
+  if(!el)return true;
+  const val=(el.value||'').trim();
+  if(!val){
+    el.style.borderColor='var(--danger)';
+    el.focus();
+    toast(msg||'此欄位為必填');
+    setTimeout(()=>el.style.borderColor='',2000);
+    return false;
+  }
+  return true;
+}
+
+// ── OUTLINE TREE ──────────────────────────
+// Data: array of nodes {id,type:'vol'|'ch'|'ep',title,summary,children:[],collapsed}
+// type vol = 卷, ch = 章, ep = 話
+
+function outlineNewNode(type,title=''){
+  return{id:'n'+Date.now()+Math.random().toString(36).slice(2,6),type,title,summary:'',children:[],collapsed:false};
+}
+
+function renderOutline(workId){
+  const d=getDocs(workId);
+  if(!d.outlineTree)d.outlineTree=[];
+  // migrate old flat outline to tree if needed
+  if(d.outline&&d.outline.length&&!d.outlineTree.length){
+    d.outlineTree=d.outline.map(o=>({...outlineNewNode('ch',o.title),summary:o.summary||''}));
+    d.outline=[];
+  }
+  const list=gel('outline-list');
+  list.innerHTML='';
+  const ul=buildOutlineUL(d.outlineTree,workId,0);
+  list.appendChild(ul);
+}
+
+function buildOutlineUL(nodes,workId,depth){
+  const ul=document.createElement('ul');
+  ul.className='outline-tree';
+  nodes.forEach((node,idx)=>{
+    const li=document.createElement('li');li.className='outline-node';
+    const hasChildren=node.children&&node.children.length>0;
+    const typeLabels={vol:'卷',ch:'章',ep:'話'};
+    const canAddChild={vol:['ch'],ch:['ep'],ep:[]};
+    const childTypes=canAddChild[node.type]||[];
+
+    li.innerHTML=`
+      <div class="outline-node-row">
+        <div class="sel-check outline-sel-check" style="position:static;width:16px;height:16px;margin-right:2px;flex-shrink:0;${selectMode.outline?'':'display:none'}"></div>
+        <button class="outline-toggle${hasChildren?(node.collapsed?' ':' open'):(node.children&&node.children.length?'':' leaf')}" data-idx="${idx}">
+          <i class="ti ti-chevron-right"></i>
+        </button>
+        <span class="outline-node-type ${node.type}">${typeLabels[node.type]||node.type}</span>
+        <input class="outline-node-inp" value="${esc(node.title)}" placeholder="${typeLabels[node.type]||''}標題…" data-idx="${idx}">
+        <div class="outline-node-actions">
+          ${childTypes.map(ct=>`<button class="outline-node-add" data-add="${ct}" data-idx="${idx}">+ ${typeLabels[ct]}</button>`).join('')}
+          <button class="outline-node-del" data-idx="${idx}" title="刪除"><i class="ti ti-x"></i></button>
+        </div>
+      </div>
+      <div style="padding-left:2px">
+        <input class="outline-node-sum" value="${esc(node.summary||'')}" placeholder="摘要（選填）" data-idx="${idx}">
+      </div>`;
+
+    // children subtree
+    const childWrap=document.createElement('div');
+    if(hasChildren){
+      childWrap.style.display=node.collapsed?'none':'block';
+      childWrap.appendChild(buildOutlineUL(node.children,workId,depth+1));
+    }
+    li.appendChild(childWrap);
+    ul.appendChild(li);
+
+    // outline select
+    if(selectMode.outline){
+      li.classList.add('selectable');
+      if(BATCH.outline.has(node.id))li.classList.add('selected');
+      li.querySelector('.outline-node-row')?.addEventListener('click',e=>{
+        if(e.target.closest('.outline-toggle')||e.target.closest('.outline-node-inp')||e.target.closest('.outline-node-add')||e.target.closest('.outline-node-del'))return;
+        if(BATCH.outline.has(node.id))BATCH.outline.delete(node.id);else BATCH.outline.add(node.id);
+        li.classList.toggle('selected',BATCH.outline.has(node.id));
+        updateBatchBar('outline','outline-batch-bar');
+      });
+    }
+    // toggle
+    li.querySelector('.outline-toggle')?.addEventListener('click',()=>{
+      node.collapsed=!node.collapsed;
+      childWrap.style.display=node.collapsed?'none':'block';
+      li.querySelector('.outline-toggle').classList.toggle('open',!node.collapsed);
+      save();
+    });
+    // title input
+    li.querySelector('.outline-node-inp').addEventListener('input',function(){node.title=this.value;save();});
+    // summary input
+    li.querySelector('.outline-node-sum').addEventListener('input',function(){node.summary=this.value;save();});
+    // add child
+    li.querySelectorAll('[data-add]').forEach(btn=>btn.addEventListener('click',()=>{
+      if(!node.children)node.children=[];
+      node.children.push(outlineNewNode(btn.dataset.add));
+      node.collapsed=false;
+      save();renderOutline(workId);
+    }));
+    // delete
+    li.querySelector('.outline-node-del')?.addEventListener('click',()=>{
+      if(!confirm('確定要刪除此項目（含所有子項）嗎？'))return;
+      nodes.splice(idx,1);save();renderOutline(workId);
+    });
+  });
+  return ul;
+}
+
+function exportOutline(id,md){
+  const w=S.works.find(x=>x.id===id),d=getDocs(id);
+  const tree=d.outlineTree||[];
+  const NL='\n';
+  let t=(md?'# ':'')+(w?.name||'')+'\u3000\u6545\u4e8b\u5927\u7db1'+NL+NL;
+  function walk(nodes,depth){
+    nodes.forEach((n,i)=>{
+      const indent='  '.repeat(depth);
+      const prefix=md?('#'.repeat(Math.min(depth+2,4))+' '):(indent+(i+1)+'. ');
+      t+=prefix+n.title+NL;
+      if(n.summary)t+=(md?indent+'> ':indent+'   ')+n.summary+NL;
+      if(n.children&&n.children.length)walk(n.children,depth+1);
+      t+=NL;
+    });
+  }
+  walk(tree,0);
+  dl(md?'\u5927\u7db1.md':'\u5927\u7db1.txt',t);toast(md?'\u5df2\u5320\u51fa MD':'\u5df2\u5320\u51fa TXT');
+}
+
+// ── WORLD OVERVIEW EDITOR ─────────────────
+function initWorldOverviewEditor(cat){
+  const tb=gel('world-overview-tb'),ed=gel('world-overview-ed');
+  if(!tb||!ed)return;
+  wySetHTML('world-overview-ed',cat.overview||'');
+  buildToolbar('world-overview-tb','world-overview-ed',null);
+  ed.addEventListener('input',()=>{cat.overview=wyGetHTML('world-overview-ed');save();});
+}
+
+
+// ── CHAR CUSTOM FIELDS ────────────────────
+function renderCharCustomFields(c,workId,idx){
+  if(!c.customFields)c.customFields=[];
+  const wrap=gel('char-custom-fields');
+  if(!wrap)return;
+  wrap.innerHTML=c.customFields.map((f,fi)=>`
+    <div class="char-custom-field" data-fi="${fi}">
+      <input class="char-custom-label-inp" value="${esc(f.label)}" placeholder="欄位名稱" data-fi="${fi}">
+      <textarea class="char-custom-val-ta" rows="2" data-fi="${fi}">${esc(f.value||'')}</textarea>
+      <button class="char-custom-del" data-fi="${fi}"><i class="ti ti-x"></i></button>
+    </div>`).join('');
+  wrap.querySelectorAll('.char-custom-label-inp').forEach(inp=>inp.addEventListener('input',()=>{
+    c.customFields[+inp.dataset.fi].label=inp.value;save();
+  }));
+  wrap.querySelectorAll('.char-custom-val-ta').forEach(ta=>ta.addEventListener('input',()=>{
+    c.customFields[+ta.dataset.fi].value=ta.value;save();
+  }));
+  wrap.querySelectorAll('.char-custom-del').forEach(btn=>btn.addEventListener('click',()=>{
+    c.customFields.splice(+btn.dataset.fi,1);save();renderCharCustomFields(c,workId,idx);
+  }));
+  gel('btn-add-char-field').onclick=()=>{
+    if(!c.customFields)c.customFields=[];
+    c.customFields.push({label:'自訂欄位',value:''});
+    save();renderCharCustomFields(c,workId,idx);
+  };
+}
+
+// ── BATCH SELECT SYSTEM ───────────────────
+const BATCH={sparks:new Set(),mood:new Set(),works:new Set(),outline:new Set()};
+let selectMode={sparks:false,mood:false,works:false,outline:false};
+
+function toggleSelectMode(key,barId,renderFn){
+  selectMode[key]=!selectMode[key];
+  BATCH[key].clear();
+  gel(barId).style.display=selectMode[key]?'flex':'none';
+  if(!selectMode[key])updateBatchBar(key,barId);
+  renderFn();
+}
+
+function updateBatchBar(key,barId){
+  const bar=gel(barId);if(!bar)return;
+  const n=BATCH[key].size;
+  if(!selectMode[key]){bar.style.display='none';return;}
+  bar.style.display='flex';
+  const labels={
+    sparks:{del:'刪除靈感',mod:'移動資料夾'},
+    mood:{del:'刪除資料',mod:'移動資料夾'},
+    works:{del:'刪除作品',mod:'修改分類'},
+    outline:{del:'刪除節點',mod:'移動層級'}
+  };
+  const lbl=labels[key];
+  bar.innerHTML=`<span style="font-weight:500">${n} 項已選</span>
+    <button class="btn" id="batch-sel-all-${key}"><i class="ti ti-select-all"></i> 全選</button>
+    ${n>0?`<button class="btn btn-danger" id="batch-del-${key}"><i class="ti ti-trash"></i> ${lbl.del}</button>
+     <button class="btn" id="batch-mod-${key}"><i class="ti ti-edit"></i> ${lbl.mod}</button>`:''}
+    <button class="btn" id="batch-cancel-${key}" style="margin-left:auto"><i class="ti ti-x"></i> 取消</button>`;
+  gel(`batch-cancel-${key}`)?.addEventListener('click',()=>{
+    selectMode[key]=false;BATCH[key].clear();bar.style.display='none';
+    ({sparks:renderSparks,mood:renderMoodboard,works:renderWorksGrid,outline:()=>renderOutline(S.curWorkId)})[key]?.();
+  });
+  gel(`batch-sel-all-${key}`)?.addEventListener('click',()=>{
+    const allFn={
+      sparks:()=>S.sparks.forEach((_,i)=>BATCH.sparks.add(i)),
+      mood:()=>S.moodItems.forEach((_,i)=>BATCH.mood.add(i)),
+      works:()=>S.works.forEach(w=>BATCH.works.add(w.id)),
+      outline:()=>{const nodes=getDocs(S.curWorkId)?.outlineTree||[];function addAll(ns){ns.forEach((n,i)=>{BATCH.outline.add(n.id);if(n.children)addAll(n.children);});}addAll(nodes);}
+    };
+    allFn[key]?.();updateBatchBar(key,barId);
+    ({sparks:renderSparks,mood:renderMoodboard,works:renderWorksGrid,outline:()=>renderOutline(S.curWorkId)})[key]?.();
+  });
+  gel(`batch-del-${key}`)?.addEventListener('click',()=>batchDelete(key,barId));
+  gel(`batch-mod-${key}`)?.addEventListener('click',()=>batchModify(key,barId));
+}
+
+function batchDelete(key,barId){
+  const n=BATCH[key].size;
+  if(!n)return;
+  if(!confirm(`確定要刪除選取的 ${n} 個項目嗎？`))return;
+  if(key==='sparks'){
+    const idxs=[...BATCH.sparks].sort((a,b)=>b-a);
+    idxs.forEach(i=>S.sparks.splice(i,1));
+    BATCH.sparks.clear();save();renderSparks();renderHomeSparks();
+  }else if(key==='mood'){
+    const idxs=[...BATCH.mood].sort((a,b)=>b-a);
+    idxs.forEach(i=>S.moodItems.splice(i,1));
+    BATCH.mood.clear();save();renderMoodboard();
+  }else if(key==='works'){
+    [...BATCH.works].forEach(id=>{S.works=S.works.filter(w=>w.id!==id);delete S.docs[id];});
+    BATCH.works.clear();save();renderAll();
+  }else if(key==='outline'){
+    const workId=S.curWorkId;
+    function removeFromTree(nodes){
+      for(let i=nodes.length-1;i>=0;i--){
+        if(BATCH.outline.has(nodes[i].id)){nodes.splice(i,1);}
+        else if(nodes[i].children)removeFromTree(nodes[i].children);
+      }
+    }
+    removeFromTree(getDocs(workId).outlineTree||[]);
+    BATCH.outline.clear();save();renderOutline(workId);
+  }
+  selectMode[key]=false;gel(barId).style.display='none';
+  toast('\u5df2\u522a\u9664');
+}
+
+function batchModify(key,barId){
+  if(key==='sparks'||key==='mood'){
+    // move to folder
+    const folders=[...new Set(S.moodItems.map(m=>m.folder).filter(Boolean))];
+    const sparkFolders=[...new Set(S.sparks.map(s=>s.customBg||s.color).filter(Boolean))];
+    const inp=prompt(key==='sparks'?'\u8f38\u5165\u65b0\u7684\u4fbf\u689d\u984f\u8272\u540d\u7a31\uff08hex\uff09':'\u8f38\u5165\u8981\u79fb\u5165\u7684\u8cc7\u6599\u593e\u540d\u7a31\uff08\u7559\u7a7a\u8868\u793a\u79fb\u51fa\u8cc7\u6599\u593e\uff09');
+    if(inp===null)return;
+    if(key==='mood'){
+      [...BATCH.mood].forEach(i=>{if(S.moodItems[i])S.moodItems[i].folder=inp.trim()||null;});
+      BATCH.mood.clear();save();renderMoodboard();
+    }else{
+      [...BATCH.sparks].forEach(i=>{if(S.sparks[i])S.sparks[i].color='custom',S.sparks[i].customBg=inp.trim()||S.sparks[i].customBg;});
+      BATCH.sparks.clear();save();renderSparks();
+    }
+  }else if(key==='works'){
+    const cats=getAllCategories();
+    const cat=prompt('\u8f38\u5165\u65b0\u5206\u985e\u6a19\u7c64\uff08\u7559\u7a7a\u8868\u793a\u79fb\u9664\u5206\u985e\uff09');
+    if(cat===null)return;
+    [...BATCH.works].forEach(id=>{const w=S.works.find(x=>x.id===id);if(w)w.category=cat.trim()||null;});
+    BATCH.works.clear();save();renderAll();
+  }else if(key==='outline'){
+    const types=['vol','\u5377','ch','\u7ae0','ep','\u8a71'];
+    const t=prompt('\u8981\u8b8a\u66f4\u6240\u9078\u7bc0\u9ede\u7684\u985e\u578b\uff1fvol=\u5377, ch=\u7ae0, ep=\u8a71');
+    if(!t||!['vol','ch','ep'].includes(t.trim()))return;
+    const newType=t.trim();
+    function updateTree(nodes){nodes.forEach(n=>{if(BATCH.outline.has(n.id))n.type=newType;if(n.children)updateTree(n.children);});}
+    updateTree(getDocs(S.curWorkId).outlineTree||[]);
+    BATCH.outline.clear();save();renderOutline(S.curWorkId);
+  }
+  selectMode[key]=false;gel(barId).style.display='none';
+  toast('\u5df2\u66f4\u65b0');
+}
+
+// ── SIDEBAR DRAWER ───────────────────────
+function openSidebar(){
+  gel('main-sidebar').classList.remove('closed');
+}
+function closeSidebar(){
+  gel('main-sidebar').classList.add('closed');
+}
+function toggleSidebar(){
+  const closed=gel('main-sidebar').classList.contains('closed');
+  if(closed)openSidebar();else closeSidebar();
+}
+// inline 模式：點選項目不再自動關閉側欄
+
+// ── BIND STATIC ───────────────────────────
+gel('sidebar-home-btn').addEventListener('click',()=>{showPanel('home');});
+gel('nav-home').addEventListener('click',()=>showPanel('home'));
+gel('nav-sparks').addEventListener('click',()=>showPanel('sparks'));
+gel('nav-moodboard').addEventListener('click',()=>{showPanel('moodboard');renderMoodboard();});
+gel('nav-settings').addEventListener('click',()=>showPanel('settings'));
+gel('sidebar-add-work').addEventListener('click',openNewWorkModal);
+gel('btn-see-sparks').addEventListener('click',()=>showPanel('sparks'));
+gel('btn-import-content').addEventListener('click', openImportModal);
+// sidebar toggle 已移至 sidebar-header 內的按鈕
+gel('btn-sidebar-toggle').addEventListener('click', () => {
+  if(window.innerWidth <= 768) openMobileDrawer();
+  else toggleSidebar();
+});
+gel('btn-export-json').addEventListener('click', exportJSON);
+gel('btn-sparks-select-mode')?.addEventListener('click',()=>toggleSelectMode('sparks','sparks-batch-bar',renderSparks));
+gel('btn-mood-select-mode')?.addEventListener('click',()=>toggleSelectMode('mood','mood-batch-bar',renderMoodboard));
+gel('btn-works-select-mode')?.addEventListener('click',()=>toggleSelectMode('works','works-batch-bar',renderWorksGrid));
+gel('btn-settings-export').addEventListener('click',exportJSON);
+gel('import-file-input').addEventListener('change',importJSON);
+gel('import-file-input2').addEventListener('change',importJSON);
+gel('btn-drive-backup').addEventListener('click',backupToCloud);
+gel('btn-add-global-link').addEventListener('click',()=>{
+  gel('new-link-name').value='';gel('new-link-url').value='';gel('new-link-note').value='';
+  gel('btn-confirm-new-link').onclick=()=>{
+    if(!requireField('new-link-name','平台名稱為必填'))return;
+    if(!requireField('new-link-url','連結網址為必填'))return;
+    const name=gel('new-link-name').value.trim(),url=gel('new-link-url').value.trim();
+    if(!name||!url)return;
+    S.globalLinks.push({name,url,note:gel('new-link-note').value.trim()});
+    closeModal('new-link');save();renderGlobalLinks();toast('連結已新增');
+  };
+  openModal('new-link');
+});
+gel('btn-cancel-new-link').addEventListener('click',()=>closeModal('new-link'));
+// theme
+document.querySelectorAll('.theme-opt').forEach(btn=>btn.addEventListener('click',()=>{applyTheme(btn.dataset.theme);save();}));
+
+// ── RENDER ALL & INIT ─────────────────────
+function renderAll(){renderWorksGrid();renderWorksSidebar();renderSparks();renderHomeSparks();renderGlobalLinks();}
+
+try{S.driveFileId=localStorage.getItem('unwritten_driveid')||null;}catch(e){}
+load();applyTheme();applyFont();bindFontButtons();renderAll();updateDriveUI();
+
+// Sync color picker inputs to loaded custom theme
+if(S.customTheme){
+  gel('cp-paper').value=S.customTheme.paper||'#faf7f2';
+  gel('cp-ink').value=S.customTheme.ink||'#2c2416';
+  gel('cp-accent').value=S.customTheme.accent||'#8b6e4e';
+}
+if(S.theme==='custom')applyCustomThemeVars();
+
+// Welcome modal (first visit)
+checkWelcome();
+
+// Load Google Identity Services if configured
+if(GOOGLE_CLIENT_ID!==''){
+  const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.async=true;s.defer=true;document.head.appendChild(s);
+}
+</script>
+<div id="app-footer" style="position:fixed;bottom:0;left:0;right:0;background:var(--paper-dark);border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:6px 20px;z-index:148;">
+  <span style="font-size:11px;color:var(--ink-faint)">© 2026 Unwritten</span>
+  <div style="display:flex;gap:14px;align-items:center">
+    <a href="https://github.com/kisugi0009/Unwritten" target="_blank" style="font-size:11px;color:var(--ink-faint);text-decoration:none;display:flex;align-items:center;gap:3px;transition:color .15s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--ink-faint)'"><i class="ti ti-brand-github" style="font-size:12px"></i>GitHub</a>
+    <a href="https://kisugi0009.github.io/Unwritten/privacy.html" target="_blank" style="font-size:11px;color:var(--ink-faint);text-decoration:none;transition:color .15s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--ink-faint)'">隱私權政策</a>
+    <a href="https://github.com/kisugi0009/Unwritten/issues" target="_blank" style="font-size:11px;color:var(--ink-faint);text-decoration:none;display:flex;align-items:center;gap:3px;transition:color .15s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--ink-faint)'"><i class="ti ti-message" style="font-size:12px"></i>回報問題</a>
+  </div>
+</div>
+</body>
+</html>
